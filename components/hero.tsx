@@ -166,11 +166,13 @@ export default function HeroSection() {
               priority
             />
 
+            {/* Light sweep */}
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-tr from-transparent via-white/20 to-transparent opacity-30 group-hover:opacity-60 animate-light-move transition-opacity duration-1000" />
           </div>
         </div>
       </div>
 
+      {/* Disable blinking cursor */}
       <style jsx>{`
         .typing-animation::after {
           content: "";
