@@ -7,6 +7,7 @@ import {
   FaFigma,
   FaGitAlt,
   FaHtml5,
+  FaGithub,
 } from "react-icons/fa";
 import {
   SiTypescript,
@@ -17,6 +18,10 @@ import {
   SiExpress,
   SiVercel,
   SiNetlify,
+  SiDotnet,
+  SiSharp,
+  SiMysql,
+  SiRedux,
 } from "react-icons/si";
 
 const skillCategories = [
@@ -35,7 +40,7 @@ const skillCategories = [
       { name: "TypeScript", icon: <SiTypescript className="text-blue-600" /> },
       { name: "React", icon: <FaReact className="text-blue-400" /> },
       { name: "Next.js", icon: <SiNextdotjs className="text-gray-400" /> },
-
+      { name: "Redux Toolkit", icon: <SiRedux className="text-purple-500" /> },
       { name: "Framer Motion", icon: <SiFramer className="text-pink-400" /> },
     ],
   },
@@ -44,7 +49,9 @@ const skillCategories = [
     skills: [
       { name: "Node.js", icon: <FaNodeJs className="text-green-500" /> },
       { name: "Express", icon: <SiExpress className="text-gray-300" /> },
-
+      { name: "C#", icon: <SiSharp className="text-indigo-500" /> },
+      { name: ".NET", icon: <SiDotnet className="text-blue-500" /> },
+      { name: "MySQL", icon: <SiMysql className="text-red-500" /> },
       { name: "REST APIs", icon: <FaDatabase className="text-indigo-400" /> },
     ],
   },
@@ -64,6 +71,7 @@ const skillCategories = [
   {
     title: "Tools & DevOps",
     skills: [
+      { name: "GitHub", icon: <FaGithub className="text-white" /> },
       { name: "Git", icon: <FaGitAlt className="text-orange-500" /> },
       { name: "Netlify", icon: <SiNetlify className="text-green-400" /> },
       { name: "Vercel", icon: <SiVercel className="text-gray-200" /> },
