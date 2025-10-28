@@ -21,25 +21,33 @@ export default function Navigation() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-         <div className="text-3xl md:text-4xl font-extrabold relative inline-block cursor-pointer">
-  <span className="bg-gradient-to-r from-blue-500 via-cyan-400 to-teal-400 bg-clip-text text-transparent animate-gradient-shimmer">
+ <div className="text-2xl md:text-3xl font-extrabold relative inline-block cursor-pointer select-none">
+  <span className="bg-gradient-to-r from-blue-500 via-cyan-400 to-teal-400 bg-clip-text text-transparent animate-slow-glow">
     Dada Kingsley
   </span>
 
   <style jsx>{`
-    @keyframes gradientShimmer {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    @keyframes slowGlow {
+      0%, 100% {
+        text-shadow:
+          0 0 5px rgba(59, 130, 246, 0.4),
+          0 0 10px rgba(59, 130, 246, 0.3),
+          0 0 20px rgba(59, 130, 246, 0.2);
+      }
+      50% {
+        text-shadow:
+          0 0 15px rgba(59, 130, 246, 0.8),
+          0 0 25px rgba(59, 130, 246, 0.6),
+          0 0 35px rgba(59, 130, 246, 0.4);
+      }
     }
 
-    .animate-gradient-shimmer {
-      background-size: 200% 200%;
-      animation: gradientShimmer 4s ease infinite;
-      text-shadow: 0 0 10px rgba(59, 130, 246, 0.5), 0 0 20px rgba(59, 130, 246, 0.3);
+    .animate-slow-glow {
+      animation: slowGlow 4s ease-in-out infinite;
     }
   `}</style>
 </div>
+
 
 
           {/* Desktop Links */}

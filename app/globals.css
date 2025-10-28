@@ -176,3 +176,30 @@
     animation: typing 3.5s steps(40, end), blink 0.75s step-end infinite;
   }
 }
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(59, 130, 246, 0.3);
+  }
+}
+
+@keyframes lightMove {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
+/* Utility classes for Tailwind use */
+.animate-glow {
+  animation: glow 3s ease-in-out infinite;
+}
+
+.animate-light-move {
+  animation: lightMove 4s linear infinite;
+}
