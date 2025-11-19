@@ -14,7 +14,6 @@ export const metadata: Metadata = {
   title: "Dada Kingsley Oluwasanmi - Full Stack Developer & UI/UX Designer",
   description:
     "Full Stack Developer & UI/UX Designer crafting modern digital experiences with TypeScript, React, and Next.js",
-  generator: "v0.app",
   openGraph: {
     title: "Dada Kingsley Oluwasanmi - Developer Portfolio",
     description: "Full Stack Developer & UI/UX Designer crafting modern digital experiences",

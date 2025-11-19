@@ -108,7 +108,7 @@ export default function HeroSection() {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
           <div className="space-y-10 animate-fade-in">
-            <div>
+            <div className="mt-6">
               <h1 className={`text-4xl md:text-5xl font-extrabold mb-6 leading-tight ${cinzel.className}`}>
                 <span className="block text-white mb-4">Hello, I'm</span>
                 <span className="bg-gradient-to-r from-blue-500 via-cyan-400 to-teal-400 bg-clip-text text-transparent">
@@ -118,7 +118,7 @@ export default function HeroSection() {
 
               {/* Typing effect */}
               <p className={`text-2xl md:text-3xl font-light text-blue-400 mb-6 min-h-[50px] ${roboto.className}`}>
-                <span className="typing-animation">{displayText}</span>
+                <span className="typing-animation font-normal">{displayText}</span>
               </p>
 
               <p
