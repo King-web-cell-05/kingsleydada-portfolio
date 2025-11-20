@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { Cinzel, Roboto } from "next/font/google";
 import { FaGithub, FaLinkedin, FaTwitter, FaWhatsapp } from "react-icons/fa";
@@ -110,7 +111,7 @@ export default function HeroSection() {
       <canvas ref={canvasRef} className="absolute inset-0 opacity-40" />
 
       <div className="relative z-10 max-w-6xl mx-auto px-4 w-full">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div className="grid md:grid-cols-2 gap-40 items-center">
 
           {/* LEFT TEXT SIDE */}
           <div className="space-y-10">
@@ -126,7 +127,6 @@ export default function HeroSection() {
               <p className={`text-2xl md:text-3xl text-blue-400 ${roboto.className}`}>
                 {displayText}
 
-                {/* 🌟 NEW GLOWING CURSOR */}
              <span className="ml-1 inline-block w-[2px] h-[32px] bg-blue-400 animate-blink"></span>
 
 
@@ -163,14 +163,38 @@ export default function HeroSection() {
           </div>
 
           {/* IMAGE SIDE */}
-          <div className="relative h-96 md:h-[550px] rounded-xl overflow-hidden shadow-2xl group">
-            <Image
-              src="/my-portfolio-pic.jpg"
-              alt="Portfolio Image"
-              fill
-              className="object-cover group-hover:scale-105 transition-transform duration-700"
-            />
-          </div>
+    <div className="relative h-96 md:h-[550px]">
+      {/* Glow / Pulse Background */}
+      <motion.div
+        className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500 via-cyan-400 to-teal-400 opacity-20 blur-3xl"
+        animate={{ scale: [1, 1.1, 1], opacity: [0.2, 0.35, 0.2] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      {/* Floating Image */}
+      <motion.div
+        className="relative h-full rounded-xl overflow-hidden shadow-2xl "
+        animate={{
+          scale: [1, 1.03, 1],
+          rotate: [0, 1.5, -1.5, 0],
+       
+        }}
+        transition={{
+          duration: 8,
+          ease: "easeInOut",
+          repeat: Infinity,
+          repeatType: "loop",
+        }}
+        whileHover={{ scale: 1.05 }}
+      >
+        <Image
+          src="/my-portfolio-pic.jpg"
+          alt="Portfolio Image"
+          fill
+          className="object-cover rounded-xl"
+        />
+      </motion.div>
+    </div>
 
         </div>
       </div>

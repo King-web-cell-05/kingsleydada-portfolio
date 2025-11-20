@@ -6,24 +6,22 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const experiences = [
   {
-    period: "2023 - Present",
-    role: "Senior Full Stack Developer",
-    company: "Tech Innovation Ltd — Lagos, Nigeria",
+    period: "2025 - Present",
+    role: "Freelance developer",
     description:
-      "Leading architecture and development of scalable web applications, integrating cloud services and CI/CD pipelines, while mentoring a team of developers.",
+      "Created an intuitive e-commerce printing website ",
     highlights: [
-      "Architected micro-frontends with Next.js & TypeScript",
-      "Optimized APIs for 40% faster response times",
-      "Integrated AWS S3, Lambda & RDS",
+      "Integrated frontends with Next.js & TypeScript",
+      "Made use of email.js ",
     ],
-    techStack: ["Next.js", "React", "TypeScript", "Node.js", "PostgreSQL", "AWS"],
+    techStack: ["Next.js", "React", "TypeScript"],
   },
   {
-    period: "2021 - 2023",
-    role: "Full Stack Developer",
-    company: "Digital Solutions Agency — Remote",
+    period: "Early 2025",
+    role: "Assistant coding tutor",
+    company: "Olac Academy",
     description:
-      "Built scalable web applications for multiple clients, focusing on frontend and backend optimization, CI/CD, and reusable component libraries.",
+      "Lorem ipadmahdakds,NDas,dbasn,asdasdaskdkasndm,",
     highlights: [
       "Delivered 12+ client projects",
       "Implemented SSR/SSG for SEO and speed",

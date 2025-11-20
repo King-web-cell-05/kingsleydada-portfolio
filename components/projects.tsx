@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
+import { motion } from "framer-motion"
 
 const projects = [
   {
@@ -9,7 +10,7 @@ const projects = [
     title: "Todo App",
     description:
       "An intuitive todo application featuring task management, deadlines, and priority settings with a sleek UI.",
-    technologies: ["JavaScript", "CSS", "HTML",],
+    technologies: ["JavaScript", "CSS", "HTML"],
     image: "/todo-app.jpg",
     link: "https://github.com/King-web-cell-05/todo-app",
     live: "https://king-web-cell-05.github.io/todo-app/",
@@ -18,7 +19,7 @@ const projects = [
     id: 2,
     title: "Login Design",
     description: "Sleek and modern login interface with smooth animations, responsive design.",
-    technologies: ["CSS", "HTML",],
+    technologies: ["CSS", "HTML"],
     image: "/login-page.jpg",
     link: "https://github.com/King-web-cell-05/login-design",
     live: "https://king-web-cell-05.github.io/login-design/",
@@ -75,11 +76,26 @@ export default function ProjectsSection() {
           </span>
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: {},
+            visible: {
+              transition: {
+                staggerChildren: 0.15,
+              },
+            },
+          }}
+        >
           {projects.map((project) => (
-            <div
+            <motion.div
               key={project.id}
               className="group relative bg-gray-800 border border-gray-700 rounded-2xl overflow-hidden shadow-lg hover:shadow-cyan-500/20 transition-all duration-500 transform hover:-translate-y-2"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }}
+              whileHover={{ scale: 1.03 }}
             >
               {/* Project Image */}
               <div className="relative h-64 md:h-72 lg:h-80 overflow-hidden rounded-t-2xl">
@@ -130,9 +146,9 @@ export default function ProjectsSection() {
 
               {/* Glow border effect */}
               <div className="absolute inset-0 pointer-events-none rounded-2xl border border-cyan-500 opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   )
