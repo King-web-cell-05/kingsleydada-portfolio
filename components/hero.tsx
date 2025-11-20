@@ -117,7 +117,7 @@ export default function HeroSection() {
           <div className="space-y-10">
 
             <h1 className={`text-4xl md:text-5xl font-extrabold ${cinzel.className}`}>
-              <span className="text-white block mb-4">Hello, I&apos;m</span>
+              <span className="text-white block mt-10">Hello, I&apos;m</span>
               <span className="bg-gradient-to-r from-blue-500 via-cyan-400 to-teal-400 bg-clip-text text-transparent">
                 Dada Kingsley Oluwasanmi
               </span>
@@ -127,29 +127,36 @@ export default function HeroSection() {
               <p className={`text-2xl md:text-3xl text-blue-400 ${roboto.className}`}>
                 {displayText}
 
-             <span className="ml-1 inline-block w-[2px] h-[32px] bg-blue-400 animate-blink"></span>
+                <span className="ml-1 inline-block w-[2px] h-[32px] bg-blue-400 animate-blink"></span>
 
 
               </p>
             </div>
 
             <p className={`text-lg text-gray-300 leading-relaxed ${roboto.className}`}>
-              Crafting interactive web applications with TypeScript, React,
-              Next.js and C# ASP.NET.
+              Software Developer with a passion for crafting innovative solutions. Skilled in designing, building, and deploying software applications, with expertise in multiple programming languages and technologies. 
             </p>
 
             {/* SOCIAL ICONS */}
             <div className="flex space-x-6 mt-6">
-              <a className="text-gray-300 hover:text-white text-2xl" href="https://github.com/King-web-cell-05" target="_blank">
+              <a className="text-gray-300 hover:text-white text-2xl" href="https://github.com/King-web-cell-05" target="_blank"
+                rel="noopener noreferrer"
+              >
                 <FaGithub />
               </a>
-              <a className="text-blue-500 hover:text-cyan-400 text-2xl" href="https://www.linkedin.com/in/dada-kingsley-a0858637a">
+              <a className="text-blue-500 hover:text-cyan-400 text-2xl" href="https://www.linkedin.com/in/dada-kingsley-a0858637a"
+                target="_blank"
+                rel="noopener noreferrer">
                 <FaLinkedin />
               </a>
-              <a className="text-cyan-400 hover:text-teal-400 text-2xl" href="https://x.com/codekingz05">
+              <a className="text-cyan-400 hover:text-teal-400 text-2xl" href="https://x.com/codekingz05"
+                target="_blank"
+                rel="noopener noreferrer">
                 <FaTwitter />
               </a>
-              <a className="text-green-500 hover:text-green-400 text-2xl" href="https://wa.me/+2349065644691">
+              <a className="text-green-500 hover:text-green-400 text-2xl" href="https://wa.me/+2349065644691"
+                target="_blank"
+                rel="noopener noreferrer">
                 <FaWhatsapp />
               </a>
             </div>
@@ -163,38 +170,38 @@ export default function HeroSection() {
           </div>
 
           {/* IMAGE SIDE */}
-    <div className="relative h-96 md:h-[550px]">
-      {/* Glow / Pulse Background */}
-      <motion.div
-        className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500 via-cyan-400 to-teal-400 opacity-20 blur-3xl"
-        animate={{ scale: [1, 1.1, 1], opacity: [0.2, 0.35, 0.2] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-      />
+          <div className="relative h-96 md:h-[550px]">
+            {/* Glow / Pulse Background */}
+            <motion.div
+              className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500 via-cyan-400 to-teal-400 opacity-20 blur-3xl"
+              animate={{ scale: [1, 1.1, 1], opacity: [0.2, 0.35, 0.2] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            />
 
-      {/* Floating Image */}
-      <motion.div
-        className="relative h-full rounded-xl overflow-hidden shadow-2xl "
-        animate={{
-          scale: [1, 1.03, 1],
-          rotate: [0, 1.5, -1.5, 0],
-       
-        }}
-        transition={{
-          duration: 8,
-          ease: "easeInOut",
-          repeat: Infinity,
-          repeatType: "loop",
-        }}
-        whileHover={{ scale: 1.05 }}
-      >
-        <Image
-          src="/my-portfolio-pic.jpg"
-          alt="Portfolio Image"
-          fill
-          className="object-cover rounded-xl"
-        />
-      </motion.div>
-    </div>
+            {/* Floating Image */}
+            <motion.div
+              className="relative h-full rounded-xl overflow-hidden shadow-2xl "
+              animate={{
+                scale: [1, 1.03, 1],
+                rotate: [0, 1.5, -1.5, 0],
+
+              }}
+              transition={{
+                duration: 8,
+                ease: "easeInOut",
+                repeat: Infinity,
+                repeatType: "loop",
+              }}
+              whileHover={{ scale: 1.05 }}
+            >
+              <Image
+                src="/my-portfolio-pic.jpg"
+                alt="Portfolio Image"
+                fill
+                className="object-cover rounded-xl"
+              />
+            </motion.div>
+          </div>
 
         </div>
       </div>

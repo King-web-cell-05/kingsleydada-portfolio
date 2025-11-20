@@ -7,48 +7,54 @@ export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
 
   const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
+    if (id === "home") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
     }
     setIsOpen(false);
   };
 
-  const navItems = ["about", "skills", "projects", "experience", "contact"];
+  const navItems = ["home", "about", "skills", "projects", "experience", "contact"];
 
   return (
     <nav className="fixed top-0 w-full z-50 bg-gray-900/80 backdrop-blur-sm border-b border-gray-800 transition-all duration-300">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
+
           {/* Logo */}
- <div className="text-2xl md:text-3xl font-extrabold relative inline-block cursor-pointer select-none">
-  <span className="bg-gradient-to-r from-blue-500 via-cyan-400 to-teal-400 bg-clip-text text-transparent animate-slow-glow">
-    Dada Kingsley
-  </span>
+          <div
+            className="text-2xl md:text-3xl font-extrabold relative inline-block cursor-pointer select-none"
+            onClick={() => scrollToSection("home")}
+          >
+            <span className="bg-gradient-to-r from-blue-500 via-cyan-400 to-teal-400 bg-clip-text text-transparent animate-slow-glow">
+              Dada Kingsley
+            </span>
 
-  <style jsx>{`
-    @keyframes slowGlow {
-      0%, 100% {
-        text-shadow:
-          0 0 5px rgba(59, 130, 246, 0.4),
-          0 0 10px rgba(59, 130, 246, 0.3),
-          0 0 20px rgba(59, 130, 246, 0.2);
-      }
-      50% {
-        text-shadow:
-          0 0 15px rgba(59, 130, 246, 0.8),
-          0 0 25px rgba(59, 130, 246, 0.6),
-          0 0 35px rgba(59, 130, 246, 0.4);
-      }
-    }
+            <style jsx>{`
+              @keyframes slowGlow {
+                0%, 100% {
+                  text-shadow:
+                    0 0 5px rgba(59, 130, 246, 0.4),
+                    0 0 10px rgba(59, 130, 246, 0.3),
+                    0 0 20px rgba(59, 130, 246, 0.2);
+                }
+                50% {
+                  text-shadow:
+                    0 0 15px rgba(59, 130, 246, 0.8),
+                    0 0 25px rgba(59, 130, 246, 0.6),
+                    0 0 35px rgba(59, 130, 246, 0.4);
+                }
+              }
 
-    .animate-slow-glow {
-      animation: slowGlow 4s ease-in-out infinite;
-    }
-  `}</style>
-</div>
-
-
+              .animate-slow-glow {
+                animation: slowGlow 4s ease-in-out infinite;
+              }
+            `}</style>
+          </div>
 
           {/* Desktop Links */}
           <div className="hidden md:flex space-x-8">
@@ -64,17 +70,18 @@ export default function Navigation() {
           </div>
 
           {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 rounded-lg hover:bg-gray-700 transition-colors"
-            aria-label="Toggle menu"
-          >
-            {isOpen ? <X className="w-6 h-6 text-white" /> : <Menu className="w-6 h-6 text-white" />}
-          </button>
+       <button
+  onClick={() => setIsOpen(!isOpen)}
+  className="md:hidden p-2 rounded-lg hover:bg-gray-700 transition-colors z-50 relative"
+  aria-label="Toggle menu"
+>
+  {isOpen ? <X className="w-6 h-6 text-white" /> : <Menu className="w-6 h-6 text-white" />}
+</button>
+
         </div>
       </div>
 
-      {/* Mobile Menu Overlay */}
+      {/* Overlay */}
       <div
         className={`fixed inset-0 bg-black/40 backdrop-blur-sm z-40 transition-opacity duration-300 ${
           isOpen ? "opacity-100 visible" : "opacity-0 invisible"
@@ -82,7 +89,7 @@ export default function Navigation() {
         onClick={() => setIsOpen(false)}
       />
 
-      {/* Mobile Dropdown Menu */}
+      {/* Mobile Dropdown */}
       <div
         className={`md:hidden fixed top-16 left-0 w-full bg-gray-900 border-t border-gray-800 z-50 transform transition-transform duration-300 ${
           isOpen ? "translate-y-0 opacity-100" : "-translate-y-5 opacity-0 pointer-events-none"

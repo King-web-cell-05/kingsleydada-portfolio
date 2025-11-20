@@ -3,7 +3,6 @@
 "use client"
 
 import Image from "next/image"
-import Link from "next/link"
 import { motion } from "framer-motion"
 
 const projects = [
@@ -30,8 +29,8 @@ const projects = [
     id: 3,
     title: "Weather App",
     description:
-        "A stylish weather application that provides real-time weather updates, forecasts, and dynamic backgrounds based on weather conditions.",
-    technologies: [ "JavaScript", "CSS", "HTML", "OpenWeatherMap API"],
+      "A stylish weather application that provides real-time weather updates, forecasts, and dynamic backgrounds based on weather conditions.",
+    technologies: ["JavaScript", "CSS", "HTML", "OpenWeatherMap API"],
     image: "/weather-apc.jpg",
     link: "https://github.com/King-web-cell-05/weather-Apc",
     live: "https://king-web-cell-05.github.io/weather-Apc/",
@@ -47,7 +46,7 @@ const projects = [
   },
   {
     id: 5,
-      title: "Real Estate Platform",
+    title: "Real Estate Platform",
     description:
       "Comprehensive real estate platform with property listings, advanced search filters, Advertising integration, and user authentication.",
     technologies: ["React Native", "JavaScript", "Tailwind CSS", "Framer Motion"],
@@ -131,22 +130,30 @@ export default function ProjectsSection() {
 
                 {/* Action Buttons */}
                 <div className="flex gap-3 mt-2">
-                  <Link
+
+                  {/* OPEN IN NEW TAB */}
+                  <a
                     href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="flex-1 px-4 py-2 border border-cyan-400 text-cyan-400 rounded-lg text-sm font-semibold text-center hover:bg-cyan-500/10 transition-colors"
                   >
                     View Code
-                  </Link>
-                  <Link
+                  </a>
+
+                  <a
                     href={project.live}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="flex-1 px-4 py-2 bg-cyan-400 text-gray-900 rounded-lg text-sm font-semibold text-center hover:bg-cyan-500 transition-colors"
                   >
                     Live Demo
-                  </Link>
+                  </a>
+
                 </div>
               </div>
 
-              {/* Glow border effect */}
+              {/* Glow border */}
               <div className="absolute inset-0 pointer-events-none rounded-2xl border border-cyan-500 opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
             </motion.div>
           ))}
