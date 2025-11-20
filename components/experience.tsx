@@ -21,30 +21,44 @@ const experiences = [
     role: "Assistant coding tutor",
     company: "Olac Academy",
     description:
-      "Lorem ipadmahdakds,NDas,dbasn,asdasdaskdkasndm,",
+      "As an assitant coding tutor, I support students in mastering programming concepts and building projects.",
     highlights: [
-      "Delivered 12+ client projects",
-      "Implemented SSR/SSG for SEO and speed",
-      "Automated deployments with GitHub Actions & Vercel",
+      "Personalized coding guidance for students of all levels",
+      "Hands-on projects support and real-world examples",
+      "Expertise in multiple programming languages and technologies",
     ],
-    techStack: ["React", "Next.js", "Node.js", "MongoDB", "Tailwind CSS"],
+    techStack: ["React", "Next.js", "Node.js", "CSS", "Tailwind CSS"],
   },
 ];
 
 const education = [
   {
-    period: "2020 - 2024",
-    degree: "B.Sc. Computer Science",
-    school: "University of Lagos, Nigeria",
+    period: "2025",
+    degree: " National Diploma in Computer Science",
+    school: "Yaba college of technology",
     description:
       "Focused on software engineering, algorithms, and human-computer interaction. Participated in hackathons and open-source projects.",
   },
-  {
-    period: "2017 - 2019",
-    degree: "National Diploma in Computer Science",
-    school: "Yaba College of Technology, Lagos",
+    {
+    period: "2025",
+    degree: "Full-Stack developing certificate",
+    school: "Olac Academy",
     description:
-      "Gained foundational knowledge in programming, databases, and web technologies through multiple projects.",
+      "Certified Full Stack Developer with expertise in designing, building and deploying scalable applications",
+  },
+  {
+    period: "2023-2024",
+    degree: "West Africa Examinations Council Certificate",
+    school: "New Ocean Comprehensive high school",
+    description:
+      "Gained foundational knowledge in various subjects with a focus on computer related subjects",
+  },
+   {
+    period: "2023",
+    degree: "Destop Publishing certificate",
+    school: "Citadel",
+    description:
+      "Certified desktop publisher with expertise in creating visually appealing and effective publications",
   },
 ];
 
