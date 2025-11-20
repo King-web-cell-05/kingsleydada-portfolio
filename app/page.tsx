@@ -1,14 +1,15 @@
-/* eslint-disable react/no-unescaped-entities */
 "use client";
 
 import { useState, useEffect } from "react";
-import HeroSection from "@/components/hero";
-import AboutSection from "@/components/about";
-import SkillsSection from "@/components/skills";
-import ProjectsSection from "@/components/projects";
-import ExperienceSection from "@/components/experience";
-import ContactSection from "@/components/contact";
+import dynamic from "next/dynamic";
 import Navigation from "@/components/navigation";
+
+const HeroSection = dynamic(() => import("@/components/hero"));
+const AboutSection = dynamic(() => import("@/components/about"));
+const SkillsSection = dynamic(() => import("@/components/skills"));
+const ProjectsSection = dynamic(() => import("@/components/projects"));
+const ExperienceSection = dynamic(() => import("@/components/experience"));
+const ContactSection = dynamic(() => import("@/components/contact"));
 
 export default function Home() {
   const [scrollProgress, setScrollProgress] = useState(0);
