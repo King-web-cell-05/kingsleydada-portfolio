@@ -19,14 +19,15 @@ export default function Navigation() {
     setIsOpen(false);
   };
 
-  const navItems: { name: string; icon: any; description: string }[] = [
-    { name: "home", icon: Home, description: "Welcome & Intro" },
-    { name: "about", icon: User, description: "Who I am " },
-    { name: "skills", icon: Code, description: "My tech stack & expertise" },
-    { name: "projects", icon: Briefcase, description: "Portfolio & works" },
-    { name: "experience", icon: Clipboard, description: "Professional journey" },
-    { name: "contact", icon: Mail, description: "Get in touch" },
-  ];
+const navItems: { name: string; icon: React.ElementType; description: string }[] = [
+  { name: "home", icon: Home, description: "Welcome & Intro" },
+  { name: "about", icon: User, description: "Who I am" },
+  { name: "skills", icon: Code, description: "My tech stack & expertise" },
+  { name: "projects", icon: Briefcase, description: "Portfolio & works" },
+  { name: "experience", icon: Clipboard, description: "Professional journey" },
+  { name: "contact", icon: Mail, description: "Get in touch" },
+];
+
 
   return (
     <nav className="fixed top-0 w-full z-50 bg-gray-900/90 backdrop-blur-md border-b border-gray-800 transition-all duration-300">
