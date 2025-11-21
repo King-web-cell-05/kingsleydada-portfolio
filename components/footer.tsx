@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import React from 'react';
 import { Mail, Phone, MapPin, Github, Linkedin, Twitter, Instagram, Server, ShieldCheck } from 'lucide-react';
 
