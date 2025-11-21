@@ -107,14 +107,14 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 bg-gray-900 text-white">
+    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 bg-gray-900 text-white">
       <canvas ref={canvasRef} className="absolute inset-0 opacity-40" />
 
       <div className="relative z-10 max-w-6xl mx-auto px-4 w-full">
         <div className="grid md:grid-cols-2 gap-40 items-center">
 
           {/* LEFT TEXT SIDE */}
-          <div className="space-y-10">
+          <div className="space-y-4">
 
             <h1 className={`text-4xl md:text-5xl font-extrabold ${cinzel.className}`}>
               <span className="text-white block mt-10">Hello, I&apos;m</span>

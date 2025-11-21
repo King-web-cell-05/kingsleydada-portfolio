@@ -144,7 +144,6 @@ Message: ${formData.message}`
               </p>
             </div>
 
-            {/* SOCIAL LINKS OPEN IN NEW TAB */}
             <div>
               <p className="text-sm text-muted-foreground mb-3">Follow Me</p>
               <div className="flex gap-3">
@@ -266,11 +265,7 @@ Message: ${formData.message}`
           </form>
         </div>
 
-        <div className="text-center pt-8 border-t border-border">
-          <p className="text-muted-foreground text-sm">
-            © 2025 Dada Kingsley Oluwasanmi — Full-Stack Developer • Next.js • TypeScript • Cloud Engineering.
-          </p>
-        </div>
+        
       </div>
     </section>
   )

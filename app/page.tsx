@@ -12,6 +12,7 @@ const SkillsSection = dynamic(() => import("@/components/skills"));
 const ProjectsSection = dynamic(() => import("@/components/projects"));
 const ExperienceSection = dynamic(() => import("@/components/experience"));
 const ContactSection = dynamic(() => import("@/components/contact"));
+const FooterSection = dynamic(()=> import("@/components/footer"));
 
 export default function Home() {
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -37,6 +38,7 @@ export default function Home() {
       <ProjectsSection />
       <ExperienceSection />
       <ContactSection />
+      <FooterSection />
     </div>
   );
 }
