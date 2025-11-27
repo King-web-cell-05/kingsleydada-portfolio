@@ -58,7 +58,7 @@ const navItems: { name: string; icon: React.ElementType; description: string }[]
               <button
                 key={item.name}
                 onClick={() => scrollToSection(item.name)}
-                className="text-gray-300 hover:text-white transition-colors capitalize font-medium"
+                className="text-gray-300 hover:text-white transition-colors capitalize font-medium hover:cursor-pointer"
               >
                 {item.name}
               </button>

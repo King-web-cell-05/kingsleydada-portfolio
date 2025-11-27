@@ -39,7 +39,7 @@ const projects = [
     id: 4,
     title: "Quiz App",
     description: "Interactive quiz application with name input,  questions, and score tracking.",
-    technologies: ["React Native", "JavaScript", "Tailwind CSS"],
+    technologies: ["React.Js", "JavaScript", "Tailwind CSS"],
     image: "/quiz-app.png",
     link: "https://github.com/King-web-cell-05/quiz-app",
     live: "https://quiz-app-rho-ebon.vercel.app",
@@ -49,7 +49,7 @@ const projects = [
     title: "Real Estate Platform",
     description:
       "Comprehensive real estate platform with property listings, advanced search filters, Advertising integration, and user authentication.",
-    technologies: ["React Native", "JavaScript", "Tailwind CSS", "Framer Motion"],
+    technologies: ["React.Js", "JavaScript", "Tailwind CSS", "Framer Motion"],
     image: "/real-estate-pic.jpg",
     link: "https://github.com/King-web-cell-05/realestate",
     live: "https://realestate-alpha-eight.vercel.app",
@@ -59,7 +59,7 @@ const projects = [
     title: "Mini-Portfolio Website",
     description:
       "A sleek and modern mini-portfolio website to showcase projects, skills, and contact information with responsive design.",
-    technologies: ["React Native", "JavaScript", "Tailwind CSS"],
+    technologies: ["React.Js", "JavaScript", "Tailwind CSS"],
     image: "/king-portfolio.jpg",
     link: "https://github.com/King-web-cell-05/kingsley-portfolio",
     live: "https://king-portfolio-nu.vercel.app/",

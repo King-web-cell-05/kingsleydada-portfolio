@@ -27,11 +27,11 @@ export default function ContactSection() {
     e.preventDefault()
 
     const phone = "2349065644691"
-    const text = `Hello Kingsley,
+    const text = `Hello Kingsley👋,
 My name is ${formData.name}.
-Email: ${formData.email}
-Project Type: ${formData.projectType}
-Message: ${formData.message}`
+📧Email: ${formData.email}
+💼Project Type: ${formData.projectType}
+📝Message: ${formData.message}`
 
     const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`
     window.open(url, "_blank")

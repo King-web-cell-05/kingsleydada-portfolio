@@ -1,20 +1,32 @@
 /* eslint-disable react/no-unescaped-entities */
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Github, Linkedin, Twitter, Instagram, Server, ShieldCheck } from 'lucide-react';
 
 export default function Footer() {
-  // Scroll function for all sections
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <footer className="bg-card/30 border-t border-border py-16 px-6">
+    <motion.div
+      className="bg-card/30 border-t border-border py-16 px-6"
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+      viewport={{ once: true, amount: 0.2 }}
+    >
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
-
+        
         {/* About / Logo */}
-        <div className="space-y-4">
+        <motion.div
+          className="space-y-4"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          viewport={{ once: true }}
+        >
           <h3 className="text-2xl font-bold text-foreground">Dada Kingsley</h3>
           <p className="text-sm text-muted-foreground leading-relaxed">
             Full-stack engineer specializing in modern web apps, cloud solutions, and secure system architecture.
@@ -33,65 +45,39 @@ export default function Footer() {
               <Instagram className="w-5 h-5" />
             </a>
           </div>
-        </div>
+        </motion.div>
 
         {/* Quick Links */}
-        <div className="space-y-4">
+        <motion.div
+          className="space-y-4"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
+          viewport={{ once: false }}
+        >
           <h4 className="text-xl font-semibold text-foreground mb-4">Quick Links</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>
-              <span
-                onClick={() => scrollToSection("hero")}
-                className="hover:text-primary transition cursor-pointer"
-              >
-                Home
-              </span>
-            </li>
-            <li>
-              <span
-                onClick={() => scrollToSection("about")}
-                className="hover:text-primary transition cursor-pointer"
-              >
-                About Me
-              </span>
-            </li>
-            <li>
-              <span
-                onClick={() => scrollToSection("skills")}
-                className="hover:text-primary transition cursor-pointer"
-              >
-                Skills
-              </span>
-            </li>
-            <li>
-              <span
-                onClick={() => scrollToSection("projects")}
-                className="hover:text-primary transition cursor-pointer"
-              >
-                Projects
-              </span>
-            </li>
-            <li>
-              <span
-                onClick={() => scrollToSection("experience")}
-                className="hover:text-primary transition cursor-pointer"
-              >
-                Experience
-              </span>
-            </li>
-            <li>
-              <span
-                onClick={() => scrollToSection("contact")}
-                className="hover:text-primary transition cursor-pointer"
-              >
-                Contact
-              </span>
-            </li>
+            {["hero", "about", "skills", "projects", "experience", "contact"].map((section) => (
+              <li key={section}>
+                <span
+                  onClick={() => scrollToSection(section)}
+                  className="hover:text-primary transition cursor-pointer capitalize"
+                >
+                  {section === "hero" ? "Home" : section}
+                </span>
+              </li>
+            ))}
           </ul>
-        </div>
+        </motion.div>
 
         {/* Services */}
-        <div className="space-y-4">
+        <motion.div
+          className="space-y-4"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
+          viewport={{ once: false}}
+        >
           <h4 className="text-xl font-semibold text-foreground mb-4">Services</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li className="flex items-center gap-2"><Server className="w-4 h-4" /> Full-stack Development</li>
@@ -100,22 +86,34 @@ export default function Footer() {
             <li className="flex items-center gap-2"><Server className="w-4 h-4" /> Cloud & DevOps</li>
             <li className="flex items-center gap-2"><Server className="w-4 h-4" /> Performance Optimization</li>
           </ul>
-        </div>
+        </motion.div>
 
         {/* Contact Info */}
-        <div className="space-y-4">
+        <motion.div
+          className="space-y-4"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut", delay: 0.3 }}
+          viewport={{ once: false }}
+        >
           <h4 className="text-xl font-semibold text-foreground mb-4">Contact</h4>
           <p className="flex items-center gap-2 text-sm text-muted-foreground"><Mail className="w-4 h-4" /> kingsleydada159@gmail.com</p>
           <p className="flex items-center gap-2 text-sm text-muted-foreground"><Phone className="w-4 h-4" /> +234 906 564 4691</p>
           <p className="flex items-center gap-2 text-sm text-muted-foreground"><MapPin className="w-4 h-4" /> No 4 Idera Street, Oworoshoki, Lagos</p>
-        </div>
+        </motion.div>
 
       </div>
 
       {/* Footer Bottom */}
-      <div className="mt-16 border-t border-border pt-6 text-center text-sm text-muted-foreground">
+      <motion.div
+        className="mt-16 border-t border-border pt-6 text-center text-sm text-muted-foreground"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
+        viewport={{ once: false }}
+      >
         <p>© {new Date().getFullYear()} Dada Kingsley. All rights reserved.</p>
-      </div>
-    </footer>
+      </motion.div>
+    </motion.div>
   );
 }
