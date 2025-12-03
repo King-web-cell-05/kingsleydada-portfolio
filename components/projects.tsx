@@ -18,12 +18,12 @@ const projects = [
   },
   {
     id: 2,
-    title: "Login Design",
-    description: "Sleek and modern login interface with smooth animations, responsive design.",
-    technologies: ["CSS", "HTML"],
-    image: "/login-page.jpg",
-    link: "https://github.com/King-web-cell-05/login-design",
-    live: "https://king-web-cell-05.github.io/login-design/",
+    title: "Barbing website",
+    description: "A responsive barbing website design showcasing services, pricing, and booking options with modern aesthetics.",
+    technologies: ["Next.js", "Tailwind CSS", "TypeScript"],
+    image: "/barbing-website.jpeg",
+    link: "https://github.com/King-web-cell-05/2talk",
+    live: "https://king-web-cell-05.github.io/barbing-website/",
   },
   {
     id: 3,
