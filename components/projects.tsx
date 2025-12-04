@@ -21,7 +21,7 @@ const projects = [
     title: "Barbing website",
     description: "A responsive barbing website design showcasing services, pricing, and booking options with modern aesthetics.",
     technologies: ["Next.js", "Tailwind CSS", "TypeScript"],
-    image: "/barbing-website.jpeg",
+    image: "/barbing-website-pic.jpeg",
     link: "https://github.com/King-web-cell-05/2talk",
     live: "https://king-web-cell-05.github.io/barbing-website/",
   },
