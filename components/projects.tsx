@@ -22,7 +22,7 @@ const projects = [
     description:
       "A responsive barbing website design showcasing services, pricing, and booking options with modern aesthetics.",
     technologies: ["Next.js", "Tailwind CSS", "TypeScript"],
-    image: "/barbing-website-pic.jpeg",
+    image: "/2-talk.jpeg",
     link: "https://github.com/King-web-cell-05/2talk",
     live: "https://house-of-2talk-entertainment.vercel.app",
   },
