@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Personal Portfolio – Dada Kingsley Oluwasanmi
 
-## Getting Started
+A modern, high-performance **developer portfolio** built with **Next.js 14**, **TypeScript**, **Tailwind CSS**, and **Framer Motion**. The website showcases my skills, experience, projects, and contact information in a visually engaging and fully responsive interface.
 
-First, run the development server:
+This project features animated UI components, canvas-based particle effects, interactive project sections, and optimized performance for both desktop and mobile devices.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### **Frontend**
+- Next.js 14 (App Router)
+- React 18
+- TypeScript
+- Tailwind CSS
+- Framer Motion
+- Next/Image Optimization
+- Dynamic Component Imports
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### **UI/UX**
+- Modern responsive layout
+- Particle background canvas animation
+- Custom gradient animations
+- Smooth scroll transitions
+- Professional hero section with typewriter effect
+- Interactive project cards
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 📸 Live Demo
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Visit the live deployed website:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**https://kingsleydada-portfolio.vercel.app/**
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Each section is modular, scalable, and optimized using dynamic imports for better performance.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🧩 Key Features
+
+### **✔ Elegant Hero Section**
+- Canvas particle animation
+- Typewriter text effect
+- Floating profile image
+- Social links (GitHub, LinkedIn, Twitter, WhatsApp)
+
+### **✔ Project Showcase**
+- Fully responsive grid layout
+- Animated cards (hover scale, glow border, gradients)
+- Links to GitHub repositories + live demos
+- Uses Next/Image for performance
+
+### **✔ About, Skills & Experience**
+- Semantic content organization
+- Professional typography using Google Fonts
+- Clean layout with consistent spacing
+
+### **✔ Contact Section**
+- Smooth scroll navigation
+- Interactive CTA (“Hire Me” button)
+- Social integration
+
+### **✔ Footer**
+- Minimal, clean, and animated
+
+
+
+
+
+
+
