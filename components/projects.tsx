@@ -22,7 +22,7 @@ const projects = [
     description:
       "A responsive barbing website design showcasing services, pricing, and booking options with modern aesthetics.",
     technologies: ["Next.js", "Tailwind CSS", "TypeScript"],
-    image: "/2-talk.jpeg",
+    image: "/2-talk-img.jpeg",
     link: "https://github.com/King-web-cell-05/2talk",
     live: "https://house-of-2talk-entertainment.vercel.app",
   },
@@ -106,12 +106,12 @@ export default function ProjectsSection() {
                 whileHover={{ scale: 1.03 }}
               >
                 {/* Project Image */}
-                <div className="relative h-64 md:h-72 lg:h-80 overflow-hidden rounded-t-2xl">
+                <div className="relative h-64 md:h-72 lg:h-80 overflow-hidden rounded-t-2xl bg-black flex items-center justify-center">
                   <Image
                     src={project.image || "/placeholder.svg"}
                     alt={project.title}
                     fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                    className="object-cover transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-70 group-hover:opacity-50 transition-opacity duration-500" />
                 </div>
