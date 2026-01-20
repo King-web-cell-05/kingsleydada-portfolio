@@ -18,16 +18,6 @@ const projects = [
   },
   {
     id: 2,
-    title: "Barbing website",
-    description:
-      "A responsive barbing website design showcasing services, pricing, and booking options with modern aesthetics.",
-    technologies: ["Next.js", "Tailwind CSS", "TypeScript"],
-    image: "/2-talk-img.jpeg",
-    link: "https://github.com/King-web-cell-05/2talk",
-    live: "https://house-of-2talk-entertainment.vercel.app",
-  },
-  {
-    id: 3,
     title: "Weather App",
     description:
       "A stylish weather application providing real-time weather updates, forecasts, and dynamic backgrounds.",
@@ -35,6 +25,16 @@ const projects = [
     image: "/weather-apc.jpg",
     link: "https://github.com/King-web-cell-05/weather-Apc",
     live: "https://king-web-cell-05.github.io/weather-Apc/",
+  },
+  {
+    id: 3,
+    title: "Mini-Portfolio Website",
+    description:
+      "A sleek mini-portfolio showcasing projects, skills, and contact details with responsive design.",
+    technologies: ["React.Js", "JavaScript", "Tailwind CSS"],
+    image: "/king-portfolio.jpg",
+    link: "https://github.com/King-web-cell-05/kingsley-portfolio",
+    live: "https://king-portfolio-nu.vercel.app/",
   },
   {
     id: 4,
@@ -56,15 +56,25 @@ const projects = [
     link: "https://github.com/King-web-cell-05/realestate",
     live: "https://realestate-alpha-eight.vercel.app",
   },
-  {
+    {
     id: 6,
-    title: "Mini-Portfolio Website",
+    title: "Barbing website",
     description:
-      "A sleek mini-portfolio showcasing projects, skills, and contact details with responsive design.",
-    technologies: ["React.Js", "JavaScript", "Tailwind CSS"],
-    image: "/king-portfolio.jpg",
-    link: "https://github.com/King-web-cell-05/kingsley-portfolio",
-    live: "https://king-portfolio-nu.vercel.app/",
+      "A responsive barbing website design showcasing services, pricing, and booking options with modern aesthetics.",
+    technologies: ["Next.js", "Tailwind CSS", "TypeScript"],
+    image: "/2-talk-img.jpeg",
+    link: "https://github.com/King-web-cell-05/2talk",
+    live: "https://house-of-2talk-entertainment.vercel.app",
+  },
+    {
+    id: 7,
+    title: "Chess Game",
+    description:
+      "A classic chess game with interactive gameplay, move validation, and a user-friendly interface.",
+    technologies: ["C#", "Game Development"],
+    image: "/chess-game.jpeg",
+    link: "https://github.com/King-web-cell-05/Chess",
+    live: "",
   },
 ];
 
