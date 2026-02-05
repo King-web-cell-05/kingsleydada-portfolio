@@ -62,7 +62,7 @@ const projects = [
     description:
       "A responsive barbing website design showcasing services, pricing, and booking options with modern aesthetics.",
     technologies: ["Next.js", "Tailwind CSS", "TypeScript"],
-    image: "/2-talk-img.jpeg",
+    image: "/2talk-pic.jpeg",
     link: "https://github.com/King-web-cell-05/2talk",
     live: "https://house-of-2talk-entertainment.vercel.app",
   },
@@ -71,7 +71,7 @@ const projects = [
     title: "Chess Game",
     description:
       "A classic chess game with interactive gameplay, move validation, and a user-friendly interface.",
-    technologies: ["C#", "Game Development"],
+    technologies: ["C#", "Game Development", "WPF Application"],
     image: "/chess-game.jpeg",
     link: "https://github.com/King-web-cell-05/Chess",
     live: "",
