@@ -76,6 +76,17 @@ const projects = [
     link: "https://github.com/King-web-cell-05/Chess",
     live: "",
   },
+      {
+    id: 8,
+    title: "Champions league simulator",
+    description:
+      "An interactive Champions League simulator allowing users to simulate matches, track scores, and view standings.",
+    technologies: ["C#", "Mssql database", "ASP.NET Core"],
+    image: "/champions-league.jpg",
+    link: "https://github.com/King-web-cell-05/ChampionsLeagueSimulatorApi",
+    live: "",
+  },
+  
 ];
 
 export default function ProjectsSection() {
