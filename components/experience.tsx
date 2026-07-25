@@ -9,25 +9,40 @@ const experiences = [
     period: "2025 - Present",
     role: "Freelance developer",
     description:
-      "Created an intuitive e-commerce printing website ",
+      "As a freelance developer, I create custom web applications and websites for clients, focusing on responsive design, performance optimization, and user experience.",
     highlights: [
       "Integrated frontends with Next.js & TypeScript",
-      "Made use of email.js ",
+      "Implemented responsive designs using Tailwind CSS",
+      "Optimized application performance and user experience",
+      "Collaborated with clients to gather requirements and deliver tailored solutions",
+      
     ],
-    techStack: ["Next.js", "React", "TypeScript"],
+    techStack: [ "HTML", "CSS", "JavaScript", "C# ASP.NET", "Tailwind CSS", "Next.js", "React", "TypeScript"],
   },
   {
     period: "Early 2025",
     role: "Assistant coding tutor",
     company: "Olac Academy",
     description:
-      "As an assitant coding tutor, I support students in mastering programming concepts and building projects.",
+      "As an assistant coding tutor, I support students in mastering programming concepts and building projects.",
     highlights: [
       "Personalized coding guidance for students of all levels",
       "Hands-on projects support and real-world examples",
       "Expertise in multiple programming languages and technologies",
     ],
-    techStack: ["React", "Next.js", "Node.js", "CSS", "Tailwind CSS"],
+  },
+    {
+    period: "2025 - Present",
+    role: "Full-Stack Developer - Internship",
+    company: "Summy Solutions and technologies",
+    description:
+      "As a Full-Stack Developer Intern, I contribute to the development of the company's full-stack e-commerce platform, collaborating with the team to implement features and optimize performance.",
+    highlights: [
+      "Contributed to the development of the company's full-stack e-commerce platform",
+      "Collaborated with the team to implement new features and optimize performance",
+      "Gained hands-on experience with modern web technologies and development practices",
+    ],
+    techStack: [  "Next.js", "C# ASP.NET",  "Tailwind CSS", "Paystack integration", "Authentication and authorization", "Database management"],
   },
 ];
 
