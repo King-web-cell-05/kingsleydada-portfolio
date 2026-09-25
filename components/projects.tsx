@@ -4,26 +4,11 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import {
-  ArrowUpRight,
-  ExternalLink,
-  Github,
-  FolderCode,
-} from "lucide-react";
+import { ArrowUpRight, ExternalLink, Github, FolderCode } from "lucide-react";
 
 const projects = [
   {
     id: 1,
-    title: "Todo App",
-    description:
-      "A clean and intuitive task management application with task creation, deadlines, priority settings, and a responsive user interface.",
-    technologies: ["JavaScript", "CSS", "HTML"],
-    image: "/todo-app.jpg",
-    link: "https://github.com/King-web-cell-05/todo-app",
-    live: "https://king-web-cell-05.github.io/todo-app/",
-  },
-  {
-    id: 2,
     title: "Weather App",
     description:
       "A weather application that provides real-time weather information and forecasts through the OpenWeatherMap API.",
@@ -33,7 +18,7 @@ const projects = [
     live: "https://king-web-cell-05.github.io/weather-Apc/",
   },
   {
-    id: 3,
+    id: 2,
     title: "Mini Portfolio Website",
     description:
       "A responsive personal portfolio designed to showcase projects, technical skills, creative work, and professional information.",
@@ -43,7 +28,7 @@ const projects = [
     live: "https://king-portfolio-nu.vercel.app/",
   },
   {
-    id: 4,
+    id: 3,
     title: "Quiz App",
     description:
       "An interactive quiz application with user input, multiple questions, score tracking, and a simple responsive interface.",
@@ -53,22 +38,17 @@ const projects = [
     live: "https://quiz-app-rho-ebon.vercel.app",
   },
   {
-    id: 5,
+    id: 4,
     title: "Real Estate Platform",
     description:
       "A modern real estate platform featuring property listings, filtering, advertisements, authentication, and responsive user experiences.",
-    technologies: [
-      "React.js",
-      "JavaScript",
-      "Tailwind CSS",
-      "Framer Motion",
-    ],
+    technologies: ["React.js", "JavaScript", "Tailwind CSS", "Framer Motion"],
     image: "/real-estate-pic.jpg",
     link: "https://github.com/King-web-cell-05/realestate",
     live: "https://realestate-alpha-eight.vercel.app",
   },
   {
-    id: 6,
+    id: 5,
     title: "House of 2Talk",
     description:
       "A modern entertainment and barbing platform combining service presentation, event planning, content creation, and customer booking experiences.",
@@ -78,7 +58,7 @@ const projects = [
     live: "https://house-of-2talk-entertainment.vercel.app",
   },
   {
-    id: 7,
+    id: 6,
     title: "Chess Game",
     description:
       "A desktop chess application built with C# and WPF, featuring interactive gameplay, move handling, and a dedicated graphical interface.",
@@ -88,7 +68,7 @@ const projects = [
     live: "",
   },
   {
-    id: 8,
+    id: 7,
     title: "Champions League Simulator",
     description:
       "A football competition simulator built around match simulation, score tracking, standings, and backend competition management.",
@@ -96,6 +76,23 @@ const projects = [
     image: "/champions-league.jpg",
     link: "https://github.com/King-web-cell-05/ChampionsLeagueSimulatorApi",
     live: "",
+  },
+  {
+    id: 8,
+    title: "Employee Management System",
+    description:
+      "A comprehensive employee management system with user authentication, role-based access control, and streamlined HR processes.",
+    technologies: [
+      "Next.js",
+      "TypeScript",
+      "PostgreSQL",
+      "Tailwind CSS",
+      "C#",
+      "ASP.NET Core",
+    ],
+    image: "/employee-management.png",
+    link: "https://github.com/King-web-cell-05/fullstack-ems",
+    live: "https://enterprise-ems-bice.vercel.app",
   },
 ];
 
