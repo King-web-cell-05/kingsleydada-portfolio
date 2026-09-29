@@ -55,7 +55,7 @@ const projects = [
       "Tailwind CSS",
       "State Management",
     ],
-    image: "/quiz-app.png",
+    image: "/quiz-webapp.png",
     link: "https://github.com/King-web-cell-05/quiz-app",
     live: "https://quiz-app-rho-ebon.vercel.app",
   },
