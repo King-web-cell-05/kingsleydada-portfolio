@@ -16,7 +16,7 @@ const projects = [
     id: 1,
     title: "Globalease - Hr",
     description:
-      "A modern and professional HR consulting and academy website designed for Global Ease HR, focused on helping startups, SMEs, and growing businesses build structured, compliant, and people-centered workplaces. The platform presents the company’s HR consulting services, workforce planning solutions, HR strategy support, and learning academy in a clean and engaging interface. With dedicated sections for services, learning resources, team members, career opportunities, FAQs, and blog content, the website provides visitors with an organized way to explore the company’s expertise and connect with its HR professionals.",
+      "A professional HR consulting and academy website showcasing workforce solutions, HR services, learning resources, and company expertise.",
     technologies: [
       "JavaScript",
       "HTML5",
@@ -32,7 +32,7 @@ const projects = [
     id: 2,
     title: "Summy Solutions E-commerce Platform",
     description:
-      "A full-stack e-commerce platform built with a scalable and modular Next.js architecture, providing a complete shopping experience from product discovery and cart management to checkout and payment processing. The platform includes secure authentication with registration, email verification, password recovery, and protected user accounts, alongside a personalized dashboard for managing orders, wishlists, addresses, notifications, referrals, profiles, and account security. It also features a dedicated administrative dashboard with staff management, permissions, data tables, analytics, charts, and operational tools for managing the platform. ",
+      "A full-stack e-commerce platform featuring product discovery, cart management, checkout, authentication, user accounts, and an admin dashboard.",
     technologies: [
       "React.js",
       "JavaScript",
@@ -48,7 +48,7 @@ const projects = [
     id: 3,
     title: "Quiz App",
     description:
-      "An interactive quiz application designed to provide users with a simple and engaging question-and-answer experience. The application manages multiple questions, captures user selections, calculates scores, and presents results after completing the quiz. The interface was designed to remain clear and responsive across different devices while demonstrating practical use of React state management, reusable components, event handling, conditional rendering, and modern utility-first styling.",
+      "An interactive quiz application with multiple questions, score tracking, answer selection, and responsive result handling.",
     technologies: [
       "React.js",
       "JavaScript",
@@ -64,7 +64,7 @@ const projects = [
     id: 4,
     title: "Brand Lift Technologies",
     description:
-      "A modern and intuitive corporate website developed for Brand Lift Technologies, designed to showcase the company’s web development capabilities, digital solutions, and professional services. The platform presents the brand through a clean and engaging interface, highlighting its technical expertise, services, and commitment to delivering modern digital experiences. Built with a strong focus on responsive design, usability, visual consistency, and professional presentation, the website provides visitors with a clear understanding of Brand Lift Technologies and its ability to create scalable, user-focused web solutions for businesses and organizations.",
+      "A modern corporate website showcasing digital services, technical expertise, and professional solutions through a responsive interface.",
     technologies: [
       "React.js",
       "JavaScript",
@@ -81,7 +81,7 @@ const projects = [
     id: 5,
     title: "House of 2Talk",
     description:
-      "A modern business and entertainment platform developed for House of 2Talk, combining barbing services, entertainment, event planning, and content creation into a single digital experience. The website presents services clearly while providing visitors with an easy way to explore offerings and initiate customer bookings or enquiries. The interface uses a dark, premium visual direction with responsive layouts, structured service sections, interactive navigation, and mobile-friendly experiences designed to represent the brand professionally.",
+      "A modern entertainment and business platform combining barbing, event planning, comedy, and content creation services.",
     technologies: [
       "Next.js",
       "TypeScript",
@@ -98,7 +98,7 @@ const projects = [
     id: 6,
     title: "Chess Game",
     description:
-      "A desktop chess application developed with C# and Windows Presentation Foundation (WPF). The project focuses on implementing an interactive graphical chess environment where players can interact with the board and manage gameplay through a dedicated desktop interface. It demonstrates practical application of C# programming, WPF interface development, game logic, event handling, board interaction, and desktop application architecture.",
+      "A desktop chess application built with C# and WPF, featuring an interactive board and core chess gameplay functionality.",
     technologies: [
       "C#",
       "WPF",
@@ -114,7 +114,7 @@ const projects = [
     id: 7,
     title: "Champions League Simulator",
     description:
-      "A football competition simulation backend developed with C# and ASP.NET Core to model competition management, match simulation, results, and standings. The system is structured around teams, competitions, fixtures, matches, standings, and simulation services, providing a foundation for programmatically managing football competition data. The project demonstrates backend architecture, API development, database integration, entity relationships, business logic, and automated match simulation using the .NET ecosystem.",
+      "An ASP.NET Core football simulation API for managing teams, competitions, fixtures, matches, standings, and automated results.",
     technologies: [
       "C#",
       "ASP.NET Core",
@@ -131,7 +131,7 @@ const projects = [
     id: 8,
     title: "Employee Management System",
     description:
-      "A full-stack Employee Management System designed to support core workforce administration and business operations through a centralized web application. The system provides separate experiences for administrators and employees, with functionality covering authentication, role-based access, employee management, attendance tracking, leave management, payslips, and dashboard-based business information. The interface was designed with a professional enterprise-focused visual system, while the application architecture is structured to support integration with a C# ASP.NET Core backend and SQL Server database.",
+      "A full-stack enterprise system for employee administration, attendance, leave management, payslips, authentication, and role-based dashboards.",
     technologies: [
       "React",
       "TypeScript",
