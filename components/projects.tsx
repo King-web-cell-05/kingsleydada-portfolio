@@ -18,10 +18,10 @@ const projects = [
     description:
       "A professional HR consulting and academy website showcasing workforce solutions, HR services, learning resources, and company expertise.",
     technologies: [
-      "JavaScript",
+      "TypeScript",
       "HTML5",
-      "CSS3",
-      "OpenWeatherMap API",
+      "Nextjs",
+      "Tailwind Css",
     ],
     image: "/global-hr.png",
     link: "https://github.com/davidgraphix/globaleasehr",
@@ -34,10 +34,13 @@ const projects = [
     description:
       "A full-stack e-commerce platform featuring product discovery, cart management, checkout, authentication, user accounts, and an admin dashboard.",
     technologies: [
-      "React.js",
-      "JavaScript",
+      "Next.js",
+      "TypeScript",
       "Tailwind CSS",
-      "Responsive Design",
+      "C#",
+"Asp.net",
+"Postgresql",
+"Flutterwave auth",
     ],
     image: "/summy-web.png",
     link: "https://github.com/davidgraphix/summy-web",
