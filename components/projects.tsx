@@ -2,14 +2,38 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
-import {
-  ArrowUpRight,
-  ExternalLink,
-  Github,
-  FolderCode,
-  Sparkles,
-} from "lucide-react";
+import { MotionConfig, motion, type Variants } from "framer-motion";
+import { Cinzel, Inter } from "next/font/google";
+import { ArrowUpRight, ExternalLink, FolderCode, Github } from "lucide-react";
+
+const cinzel = Cinzel({
+  subsets: ["latin"],
+  weight: ["700"],
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+});
+
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.75, ease: EASE },
+  },
+};
+
+/* Cards stagger as the grid enters view */
+const grid: Variants = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.12 },
+  },
+};
 
 const projects = [
   {
@@ -17,12 +41,7 @@ const projects = [
     title: "Globalease - Hr",
     description:
       "A professional HR consulting and academy website showcasing workforce solutions, HR services, learning resources, and company expertise.",
-    technologies: [
-      "TypeScript",
-      "HTML5",
-      "Nextjs",
-      "Tailwind Css",
-    ],
+    technologies: ["TypeScript", "HTML5", "Next.js", "Tailwind CSS"],
     image: "/global-hr.png",
     link: "https://github.com/davidgraphix/globaleasehr",
     live: "https://glabaleasehr-v2.vercel.app/",
@@ -38,9 +57,9 @@ const projects = [
       "TypeScript",
       "Tailwind CSS",
       "C#",
-"Asp.net",
-"Postgresql",
-"Flutterwave auth",
+      "ASP.NET",
+      "PostgreSQL",
+      "Flutterwave",
     ],
     image: "/summy-web.png",
     link: "https://github.com/davidgraphix/summy-web",
@@ -102,12 +121,7 @@ const projects = [
     title: "Chess Game",
     description:
       "A desktop chess application built with C# and WPF, featuring an interactive board and core chess gameplay functionality.",
-    technologies: [
-      "C#",
-      "WPF",
-      "Game Development",
-      "Desktop Application",
-    ],
+    technologies: ["C#", "WPF", "Game Development", "Desktop Application"],
     image: "/chess-game.jpeg",
     link: "https://github.com/King-web-cell-05/Chess",
     live: "",
@@ -152,220 +166,182 @@ const projects = [
 
 export default function ProjectsSection() {
   return (
-    <section
-      id="projects"
-      className="relative overflow-hidden border-y border-white/[0.06] bg-[#03050a] px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28"
-    >
-      {/* ================= BACKGROUND ================= */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute left-1/2 top-0 h-[500px] w-[600px] -translate-x-1/2 rounded-full bg-emerald-500/[0.045] blur-[150px]" />
+    <MotionConfig reducedMotion="user">
+      <section
+        id="projects"
+        className={`relative overflow-hidden border-y border-white/[0.06] bg-[#03060a] px-5 py-24 text-white sm:px-8 sm:py-28 lg:px-10 lg:py-32 ${inter.className}`}
+      >
+        {/* ================= BACKGROUND ================= */}
+        <div className="pointer-events-none absolute inset-0" aria-hidden>
+          <div className="absolute left-1/2 top-0 h-[500px] w-[640px] -translate-x-1/2 rounded-full bg-emerald-500/[0.06] blur-[150px]" />
+          <div className="absolute -right-40 top-[35%] h-[420px] w-[420px] rounded-full bg-sky-500/[0.04] blur-[140px]" />
+          <div className="absolute -left-40 bottom-[10%] h-[360px] w-[360px] rounded-full bg-emerald-500/[0.035] blur-[130px]" />
 
-        <div className="absolute -right-40 top-[35%] h-[400px] w-[400px] rounded-full bg-cyan-500/[0.035] blur-[140px]" />
+          {/* Fading grid */}
+          <div
+            className="absolute inset-0 opacity-[0.03]"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,0.9) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.9) 1px, transparent 1px)",
+              backgroundSize: "64px 64px",
+              maskImage:
+                "radial-gradient(ellipse 70% 60% at 50% 40%, black 25%, transparent 100%)",
+              WebkitMaskImage:
+                "radial-gradient(ellipse 70% 60% at 50% 40%, black 25%, transparent 100%)",
+            }}
+          />
 
-        <div className="absolute -left-40 bottom-[10%] h-[350px] w-[350px] rounded-full bg-emerald-500/[0.025] blur-[130px]" />
+          {/* Vignette */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_55%,rgba(0,0,0,0.5)_100%)]" />
+        </div>
 
-        <div
-          className="absolute inset-0 opacity-[0.022]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.8) 1px, transparent 1px)",
-            backgroundSize: "50px 50px",
-          }}
-        />
-      </div>
+        <div className="relative mx-auto max-w-[1350px]">
+          {/* ================= HEADER ================= */}
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.2 }}
+            className="mx-auto mb-16 max-w-3xl text-center lg:mb-20"
+          >
+            <div className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-white/[0.09] bg-white/[0.03] py-1.5 pl-3 pr-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-md">
+              <FolderCode className="h-3.5 w-3.5 text-emerald-400" />
+              <span className="text-xs font-medium text-gray-300">
+                Selected work
+              </span>
+            </div>
 
-      <div className="relative mx-auto max-w-[1450px]">
-        {/* ================= HEADER ================= */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.7 }}
-          className="mx-auto mb-16 max-w-3xl text-center lg:mb-20"
-        >
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/[0.05] px-3.5 py-1.5">
-            <FolderCode className="h-3.5 w-3.5 text-emerald-400" />
-
-            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-300">
-              Selected Work
-            </span>
-          </div>
-
-          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-[46px]">
-            Projects I've{" "}
-            <span className="bg-gradient-to-r from-emerald-300 via-teal-300 to-cyan-300 bg-clip-text text-transparent">
-              Built
-            </span>
-          </h2>
-
-          <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-zinc-400 sm:text-base">
-            A collection of applications, platforms, and software systems
-            developed across frontend engineering, full-stack development,
-            backend architecture, desktop applications, and digital product
-            design.
-          </p>
-        </motion.div>
-
-        {/* ================= PROJECT GRID ================= */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.05 }}
-          variants={{
-            hidden: {},
-            visible: {
-              transition: {
-                staggerChildren: 0.12,
-              },
-            },
-          }}
-          className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-9"
-        >
-          {projects.map((project) => (
-            <motion.article
-              key={project.id}
-              variants={{
-                hidden: {
-                  opacity: 0,
-                  y: 35,
-                },
-                visible: {
-                  opacity: 1,
-                  y: 0,
-                  transition: {
-                    duration: 0.65,
-                    ease: "easeOut",
-                  },
-                },
-              }}
-              className="group relative overflow-hidden rounded-2xl border border-white/[0.07] bg-[#070a10] transition-all duration-500 hover:-translate-y-1 hover:border-emerald-400/20 hover:shadow-[0_25px_70px_rgba(0,0,0,0.4)]"
+            <h2
+              className={`${cinzel.className} bg-gradient-to-br from-white via-gray-100 to-emerald-400 bg-clip-text text-4xl font-bold leading-tight text-transparent sm:text-5xl lg:text-6xl`}
             >
-              {/* Top Accent */}
-              <div className="absolute left-0 right-0 top-0 z-20 h-px bg-gradient-to-r from-transparent via-emerald-400/70 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+              Projects I've Built
+            </h2>
 
-              {/* ================= IMAGE ================= */}
-              <div className="relative h-60 overflow-hidden bg-black sm:h-72 lg:h-80">
-                <Image
-                  src={project.image || "/placeholder.svg"}
-                  alt={project.title}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.045]"
+            <p className="mx-auto mt-6 max-w-2xl text-[15px] font-light leading-8 text-gray-400 sm:text-base">
+              A collection of applications, platforms, and software systems
+              developed across frontend engineering, full-stack development,
+              backend architecture, desktop applications, and digital product
+              design.
+            </p>
+          </motion.div>
+
+          {/* ================= PROJECT GRID ================= */}
+          <motion.div
+            variants={grid}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.05 }}
+            className="grid grid-cols-1 gap-7 lg:grid-cols-2 lg:gap-8"
+          >
+            {projects.map((project) => (
+              <motion.article
+                key={project.id}
+                variants={fadeUp}
+                className="group relative flex flex-col overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.025] shadow-2xl shadow-black/40 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:border-emerald-400/25 hover:shadow-[0_30px_80px_rgba(0,0,0,0.5)]"
+              >
+                {/* Top highlight */}
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-x-8 top-0 z-20 h-px bg-gradient-to-r from-transparent via-emerald-400/60 to-transparent"
                 />
 
-                <div className="absolute inset-0 bg-gradient-to-t from-[#070a10] via-black/15 to-transparent" />
+                {/* ================= IMAGE ================= */}
+                <div className="relative h-60 overflow-hidden bg-black sm:h-72 lg:h-80">
+                  <Image
+                    src={project.image || "/placeholder.svg"}
+                    alt={`${project.title} preview`}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.045]"
+                  />
 
-                <div className="absolute inset-0 bg-emerald-500/[0.02] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#070b11] via-black/10 to-transparent" />
 
-                {/* Project Number */}
-                <div className="absolute left-5 top-5 flex h-9 min-w-9 items-center justify-center rounded-lg border border-white/10 bg-black/50 px-2.5 backdrop-blur-md">
-                  <span className="font-mono text-[11px] font-semibold tracking-wider text-zinc-300">
-                    {String(project.id).padStart(2, "0")}
-                  </span>
+                  <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/[0.05]" />
                 </div>
 
-                {/* Project Label */}
-                <div className="absolute right-5 top-5 flex items-center gap-1.5 rounded-lg border border-white/10 bg-black/50 px-3 py-2 backdrop-blur-md">
-                  <Sparkles className="h-3 w-3 text-emerald-400" />
-
-                  <span className="text-[10px] font-medium uppercase tracking-wider text-zinc-300">
-                    Featured Project
-                  </span>
-                </div>
-
-                {/* Hover Icon */}
-                <div className="absolute bottom-5 right-5 flex h-10 w-10 translate-y-2 items-center justify-center rounded-full border border-white/10 bg-black/50 text-zinc-300 opacity-0 backdrop-blur-md transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                  <ArrowUpRight className="h-4 w-4" />
-                </div>
-              </div>
-
-              {/* ================= CONTENT ================= */}
-              <div className="flex min-h-[390px] flex-col p-6 sm:p-7 lg:p-8">
-                {/* Title + Description */}
-                <div>
-                  <h3 className="text-xl font-semibold tracking-tight text-white transition-colors duration-300 group-hover:text-emerald-100 sm:text-2xl">
+                {/* ================= CONTENT ================= */}
+                <div className="flex flex-1 flex-col p-6 sm:p-7 lg:p-8">
+                  <h3 className="text-xl font-semibold tracking-tight text-gray-100 sm:text-2xl">
                     {project.title}
                   </h3>
 
-                  <p className="mt-4 text-sm leading-7 text-zinc-400 sm:text-[15px] sm:leading-7">
+                  <p className="mt-4 text-[15px] font-light leading-7 text-gray-400">
                     {project.description}
                   </p>
-                </div>
 
-                {/* Technologies */}
-                <div className="mt-7">
-                  <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-zinc-600">
-                    Technologies & Tools
-                  </p>
-
-                  <div className="flex flex-wrap gap-2">
+                  {/* Technologies */}
+                  <ul className="mt-6 flex flex-wrap gap-2">
                     {project.technologies.map((tech) => (
-                      <span
+                      <li
                         key={tech}
-                        className="rounded-md border border-white/[0.07] bg-white/[0.025] px-2.5 py-1.5 text-[10px] font-medium text-zinc-400 transition-all duration-300 group-hover:border-emerald-400/10 group-hover:text-emerald-300"
+                        className="rounded-lg border border-white/[0.08] bg-white/[0.03] px-2.5 py-1 text-xs text-gray-400 transition-colors duration-300 group-hover:border-emerald-400/15 group-hover:text-emerald-300"
                       >
                         {tech}
-                      </span>
+                      </li>
                     ))}
-                  </div>
-                </div>
+                  </ul>
 
-                {/* Buttons */}
-                <div className="mt-auto flex flex-col gap-2.5 pt-8 sm:flex-row">
-                  <a
-                    href={project.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group/button flex flex-1 items-center justify-center gap-2 rounded-xl border border-white/[0.09] bg-white/[0.025] px-4 py-3 text-xs font-semibold text-zinc-300 transition-all duration-300 hover:border-white/20 hover:bg-white/[0.06] hover:text-white"
-                  >
-                    <Github className="h-4 w-4" />
-
-                    <span>View Source</span>
-
-                    <ArrowUpRight className="h-3.5 w-3.5 opacity-50 transition-transform duration-300 group-hover/button:-translate-y-0.5 group-hover/button:translate-x-0.5" />
-                  </a>
-
-                  {project.live ? (
+                  {/* Buttons */}
+                  <div className="mt-auto flex flex-col gap-3 pt-8 sm:flex-row">
                     <a
-                      href={project.live}
+                      href={project.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group/button flex flex-1 items-center justify-center gap-2 rounded-xl bg-emerald-400 px-4 py-3 text-xs font-bold text-[#03100b] transition-all duration-300 hover:bg-emerald-300 hover:shadow-[0_10px_30px_rgba(52,211,153,0.18)]"
+                      aria-label={`View source code for ${project.title}`}
+                      className="group/button flex flex-1 items-center justify-center gap-2 rounded-xl border border-white/[0.1] bg-white/[0.03] px-4 py-3 text-sm font-medium text-gray-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] transition-all duration-300 hover:border-emerald-400/30 hover:bg-white/[0.06] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#03060a]"
                     >
-                      <ExternalLink className="h-4 w-4" />
-
-                      <span>Live Preview</span>
-
-                      <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover/button:-translate-y-0.5 group-hover/button:translate-x-0.5" />
+                      <Github className="h-4 w-4" />
+                      View source
+                      <ArrowUpRight className="h-3.5 w-3.5 opacity-50 transition-transform duration-300 group-hover/button:-translate-y-0.5 group-hover/button:translate-x-0.5" />
                     </a>
-                  ) : (
-                    <div className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3 text-xs font-medium text-zinc-600">
-                      <ExternalLink className="h-4 w-4" />
 
-                      <span>Live Preview Unavailable</span>
-                    </div>
-                  )}
+                    {project.live ? (
+                      <a
+                        href={project.live}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`Open live preview of ${project.title}`}
+                        className="group/button relative flex flex-1 items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-b from-emerald-400 to-emerald-500 px-4 py-3 text-sm font-semibold text-[#02110b] shadow-[0_8px_30px_-8px_rgba(16,185,129,0.55),inset_0_1px_0_rgba(255,255,255,0.35)] transition-shadow duration-300 hover:shadow-[0_12px_40px_-8px_rgba(16,185,129,0.7),inset_0_1px_0_rgba(255,255,255,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#03060a]"
+                      >
+                        {/* Sheen on hover */}
+                        <span
+                          aria-hidden
+                          className="pointer-events-none absolute inset-y-0 -left-full w-1/2 -skew-x-12 bg-white/30 blur-md transition-all duration-700 group-hover/button:left-[130%]"
+                        />
+
+                        <ExternalLink className="relative h-4 w-4" />
+                        <span className="relative">Live preview</span>
+                        <ArrowUpRight className="relative h-3.5 w-3.5 transition-transform duration-300 group-hover/button:-translate-y-0.5 group-hover/button:translate-x-0.5" />
+                      </a>
+                    ) : (
+                      <div className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3 text-sm font-medium text-gray-600">
+                        <ExternalLink className="h-4 w-4" />
+                        No live preview
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </motion.article>
-          ))}
-        </motion.div>
+              </motion.article>
+            ))}
+          </motion.div>
 
-        {/* ================= BOTTOM ================= */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className="mt-16 text-center"
-        >
-          <div className="mx-auto h-px max-w-xs bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
+          {/* ================= BOTTOM ================= */}
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            className="mt-16 text-center"
+          >
+            <div className="mx-auto h-px max-w-xs bg-gradient-to-r from-transparent via-white/[0.12] to-transparent" />
 
-          <p className="mt-6 text-xs text-zinc-600">
-            More projects and experiments are continuously being developed.
-          </p>
-        </motion.div>
-      </div>
-    </section>
+            <p className="mt-6 text-sm font-light text-gray-500">
+              More projects and experiments are always in progress.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+    </MotionConfig>
   );
 }

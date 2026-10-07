@@ -3,13 +3,52 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import {
-  BriefcaseBusiness,
-  Check,
-  GraduationCap,
-  MapPin,
-} from "lucide-react";
+  AnimatePresence,
+  MotionConfig,
+  motion,
+  type Variants,
+} from "framer-motion";
+import { Cinzel, Inter } from "next/font/google";
+import { BriefcaseBusiness, Check, GraduationCap, MapPin } from "lucide-react";
+
+const cinzel = Cinzel({
+  subsets: ["latin"],
+  weight: ["700"],
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+});
+
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.75, ease: EASE },
+  },
+};
+
+/* Cards stagger in each time a tab opens */
+const list: Variants = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.1 },
+  },
+};
+
+const card: Variants = {
+  hidden: { opacity: 0, y: 18 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: EASE },
+  },
+};
 
 const experiences = [
   {
@@ -113,268 +152,298 @@ const education = [
   },
 ];
 
+const tabs = [
+  { id: "experience", label: "Experience", icon: BriefcaseBusiness },
+  { id: "education", label: "Education", icon: GraduationCap },
+] as const;
+
+type TabId = (typeof tabs)[number]["id"];
+
 export default function ExperienceSection() {
-  const [activeTab, setActiveTab] = useState<"experience" | "education">(
-    "experience"
-  );
+  const [activeTab, setActiveTab] = useState<TabId>("experience");
 
   return (
-    <section
-      id="experience"
-      className="relative overflow-hidden border-y border-white/[0.06] bg-[#03050a] px-4 py-20 sm:px-6 sm:py-24 lg:py-28"
-    >
-      {/* Background */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute left-[-150px] top-[20%] h-[350px] w-[350px] rounded-full bg-emerald-500/[0.04] blur-[120px]" />
+    <MotionConfig reducedMotion="user">
+      <section
+        id="experience"
+        className={`relative overflow-hidden border-y border-white/[0.06] bg-[#03060a] px-5 py-24 text-white sm:px-8 sm:py-28 lg:px-10 lg:py-32 ${inter.className}`}
+      >
+        {/* Background */}
+        <div className="pointer-events-none absolute inset-0" aria-hidden>
+          <div className="absolute -left-40 top-[15%] h-[380px] w-[380px] rounded-full bg-emerald-500/[0.06] blur-[130px]" />
+          <div className="absolute -right-40 bottom-[10%] h-[360px] w-[360px] rounded-full bg-cyan-500/[0.045] blur-[130px]" />
 
-        <div className="absolute right-[-120px] bottom-[10%] h-[320px] w-[320px] rounded-full bg-cyan-500/[0.035] blur-[120px]" />
+          {/* Fading grid */}
+          <div
+            className="absolute inset-0 opacity-[0.03]"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,0.9) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.9) 1px, transparent 1px)",
+              backgroundSize: "64px 64px",
+              maskImage:
+                "radial-gradient(ellipse 70% 60% at 50% 40%, black 25%, transparent 100%)",
+              WebkitMaskImage:
+                "radial-gradient(ellipse 70% 60% at 50% 40%, black 25%, transparent 100%)",
+            }}
+          />
 
-        <div
-          className="absolute inset-0 opacity-[0.02]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.8) 1px, transparent 1px)",
-            backgroundSize: "45px 45px",
-          }}
-        />
-      </div>
+          {/* Vignette */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_55%,rgba(0,0,0,0.5)_100%)]" />
+        </div>
 
-      <div className="relative mx-auto max-w-5xl">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.7 }}
-          className="mx-auto mb-12 max-w-2xl text-center sm:mb-14"
-        >
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/[0.06] px-3 py-1.5">
-            <BriefcaseBusiness className="h-3.5 w-3.5 text-emerald-400" />
+        <div className="relative mx-auto max-w-5xl">
+          {/* Header */}
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.3 }}
+            className="mx-auto mb-12 max-w-2xl text-center sm:mb-14"
+          >
+            <div className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-white/[0.09] bg-white/[0.03] py-1.5 pl-3 pr-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-md">
+              <BriefcaseBusiness className="h-3.5 w-3.5 text-emerald-400" />
+              <span className="text-xs font-medium text-gray-300">
+                My journey
+              </span>
+            </div>
 
-            <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300">
-              My Journey
-            </span>
-          </div>
-
-          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-[42px]">
-            Experience &{" "}
-            <span className="bg-gradient-to-r from-emerald-300 via-teal-300 to-cyan-300 bg-clip-text text-transparent">
-              Education
-            </span>
-          </h2>
-
-          <p className="mt-4 text-sm leading-7 text-gray-400 sm:text-base">
-            My professional experience, technical growth, and educational
-            journey in software development and design.
-          </p>
-        </motion.div>
-
-        {/* Tabs */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-12 flex justify-center"
-        >
-          <div className="inline-flex rounded-xl border border-white/[0.07] bg-[#070a10] p-1.5">
-            <button
-              onClick={() => setActiveTab("experience")}
-              className={`flex items-center gap-2 rounded-lg px-4 py-2.5 text-xs font-semibold transition-all duration-300 sm:px-5 ${
-                activeTab === "experience"
-                  ? "bg-emerald-400 text-[#03100b] shadow-[0_8px_25px_rgba(52,211,153,0.12)]"
-                  : "text-gray-500 hover:text-gray-200"
-              }`}
+            <h2
+              className={`${cinzel.className} bg-gradient-to-br from-white via-gray-100 to-emerald-400 bg-clip-text text-4xl font-bold leading-tight text-transparent sm:text-5xl lg:text-6xl`}
             >
-              <BriefcaseBusiness className="h-3.5 w-3.5" />
-              Experience
-            </button>
+              Experience & Education
+            </h2>
 
-            <button
-              onClick={() => setActiveTab("education")}
-              className={`flex items-center gap-2 rounded-lg px-4 py-2.5 text-xs font-semibold transition-all duration-300 sm:px-5 ${
-                activeTab === "education"
-                  ? "bg-emerald-400 text-[#03100b] shadow-[0_8px_25px_rgba(52,211,153,0.12)]"
-                  : "text-gray-500 hover:text-gray-200"
-              }`}
+            <p className="mx-auto mt-6 max-w-xl text-[15px] font-light leading-8 text-gray-400 sm:text-base">
+              My professional experience, technical growth, and educational
+              journey in software development and design.
+            </p>
+          </motion.div>
+
+          {/* Tabs */}
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            className="mb-12 flex justify-center"
+          >
+            <div
+              role="tablist"
+              aria-label="Experience or education"
+              className="relative inline-flex rounded-2xl border border-white/[0.09] bg-white/[0.03] p-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-md"
             >
-              <GraduationCap className="h-3.5 w-3.5" />
-              Education
-            </button>
-          </div>
-        </motion.div>
+              {tabs.map(({ id, label, icon: Icon }) => {
+                const isActive = activeTab === id;
 
-        {/* Content */}
-        <AnimatePresence mode="wait">
-          {activeTab === "experience" && (
-            <motion.div
-              key="experience"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.5 }}
-              className="relative"
-            >
-              {/* Timeline line */}
-              <div className="absolute bottom-4 left-[7px] top-4 hidden w-px bg-gradient-to-b from-emerald-400/60 via-emerald-400/20 to-transparent sm:block" />
-
-              <div className="space-y-6">
-                {experiences.map((exp, index) => (
-                  <motion.article
-                    key={`${exp.role}-${index}`}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{
-                      delay: index * 0.12,
-                      duration: 0.55,
-                      ease: "easeOut",
-                    }}
-                    className="relative sm:pl-10"
+                return (
+                  <button
+                    key={id}
+                    type="button"
+                    role="tab"
+                    id={`tab-${id}`}
+                    aria-selected={isActive}
+                    aria-controls={`panel-${id}`}
+                    onClick={() => setActiveTab(id)}
+                    className={`relative flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-medium transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 sm:px-6 ${
+                      isActive
+                        ? "text-[#02110b]"
+                        : "text-gray-400 hover:text-gray-100"
+                    }`}
                   >
-                    {/* Timeline dot */}
-                    <div className="absolute left-0 top-7 hidden h-4 w-4 items-center justify-center rounded-full border border-emerald-400/40 bg-[#03050a] sm:flex">
-                      <div className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                    </div>
+                    {/* Sliding pill */}
+                    {isActive && (
+                      <motion.span
+                        layoutId="experience-tab-pill"
+                        transition={{ duration: 0.45, ease: EASE }}
+                        className="absolute inset-0 rounded-xl bg-gradient-to-b from-emerald-400 to-emerald-500 shadow-[0_8px_30px_-8px_rgba(16,185,129,0.55),inset_0_1px_0_rgba(255,255,255,0.35)]"
+                      />
+                    )}
 
-                    <div className="group relative overflow-hidden rounded-2xl border border-white/[0.07] bg-[#070a10] p-5 transition-all duration-500 hover:-translate-y-0.5 hover:border-emerald-400/20 hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)] sm:p-6">
-                      {/* Top accent */}
-                      <div className="absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                    <Icon className="relative h-4 w-4" />
+                    <span className="relative">{label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </motion.div>
 
-                      {/* Period */}
-                      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-                        <span className="rounded-md border border-emerald-400/15 bg-emerald-400/[0.06] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-emerald-300">
-                          {exp.period}
-                        </span>
+          {/* Content */}
+          <AnimatePresence mode="wait">
+            {activeTab === "experience" && (
+              <motion.div
+                key="experience"
+                id="panel-experience"
+                role="tabpanel"
+                aria-labelledby="tab-experience"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                className="relative"
+              >
+                {/* Timeline line */}
+                <div
+                  aria-hidden
+                  className="absolute bottom-4 left-[7px] top-4 hidden w-px bg-gradient-to-b from-emerald-400/60 via-emerald-400/20 to-transparent sm:block"
+                />
 
-                        <div className="flex items-center gap-1.5 text-[11px] text-gray-600">
-                          <MapPin className="h-3 w-3" />
-                          Nigeria
-                        </div>
+                <motion.ol
+                  variants={list}
+                  initial="hidden"
+                  animate="show"
+                  className="space-y-6"
+                >
+                  {experiences.map((exp, index) => (
+                    <motion.li
+                      key={`${exp.role}-${index}`}
+                      variants={card}
+                      className="relative sm:pl-10"
+                    >
+                      {/* Timeline dot */}
+                      <div
+                        aria-hidden
+                        className="absolute left-0 top-8 hidden h-4 w-4 items-center justify-center rounded-full border border-emerald-400/40 bg-[#03060a] shadow-[0_0_14px_rgba(52,211,153,0.35)] sm:flex"
+                      >
+                        <div className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
                       </div>
 
-                      {/* Role */}
-                      <h3 className="text-lg font-semibold tracking-tight text-white sm:text-xl">
-                        {exp.role}
-                      </h3>
+                      <article className="group relative overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.025] p-6 shadow-2xl shadow-black/40 backdrop-blur-sm transition-colors duration-500 hover:border-emerald-400/25 hover:bg-white/[0.035] sm:p-8">
+                        {/* Top highlight */}
+                        <div
+                          aria-hidden
+                          className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent"
+                        />
 
-                      <p className="mt-1 text-sm font-medium text-emerald-400">
-                        {exp.company}
-                      </p>
+                        {/* Period + location */}
+                        <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+                          <span className="rounded-lg border border-emerald-400/20 bg-emerald-400/[0.07] px-3 py-1 text-xs font-medium text-emerald-300">
+                            {exp.period}
+                          </span>
 
-                      {/* Description */}
-                      <p className="mt-4 text-sm leading-6 text-gray-400">
-                        {exp.description}
-                      </p>
-
-                      {/* Highlights */}
-                      <div className="mt-5">
-                        <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.15em] text-gray-600">
-                          Key Contributions
-                        </p>
-
-                        <div className="space-y-2">
-                          {exp.highlights.map((highlight) => (
-                            <div
-                              key={highlight}
-                              className="flex items-start gap-2.5"
-                            >
-                              <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-400" />
-
-                              <span className="text-xs leading-5 text-gray-400">
-                                {highlight}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Tech Stack */}
-                      {exp.techStack && (
-                        <div className="mt-5 border-t border-white/[0.06] pt-4">
-                          <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.15em] text-gray-600">
-                            Technologies
-                          </p>
-
-                          <div className="flex flex-wrap gap-2">
-                            {exp.techStack.map((tech) => (
-                              <span
-                                key={tech}
-                                className="rounded-md border border-white/[0.07] bg-white/[0.025] px-2.5 py-1 text-[10px] font-medium text-gray-400 transition-colors duration-300 group-hover:border-emerald-400/10 group-hover:text-emerald-300"
-                              >
-                                {tech}
-                              </span>
-                            ))}
+                          <div className="flex items-center gap-1.5 text-xs text-gray-500">
+                            <MapPin className="h-3 w-3" />
+                            Nigeria
                           </div>
                         </div>
-                      )}
-                    </div>
-                  </motion.article>
-                ))}
-              </div>
-            </motion.div>
-          )}
 
-          {activeTab === "education" && (
-            <motion.div
-              key="education"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.5 }}
-              className="relative"
-            >
-              {/* Timeline line */}
-              <div className="absolute bottom-4 left-[7px] top-4 hidden w-px bg-gradient-to-b from-cyan-400/60 via-cyan-400/20 to-transparent sm:block" />
+                        {/* Role */}
+                        <h3 className="text-xl font-semibold tracking-tight text-gray-100 sm:text-2xl">
+                          {exp.role}
+                        </h3>
 
-              <div className="space-y-6">
-                {education.map((edu, index) => (
-                  <motion.article
-                    key={`${edu.degree}-${index}`}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{
-                      delay: index * 0.12,
-                      duration: 0.55,
-                      ease: "easeOut",
-                    }}
-                    className="relative sm:pl-10"
-                  >
-                    {/* Timeline dot */}
-                    <div className="absolute left-0 top-7 hidden h-4 w-4 items-center justify-center rounded-full border border-cyan-400/40 bg-[#03050a] sm:flex">
-                      <div className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
-                    </div>
+                        <p className="mt-1.5 text-sm font-medium text-emerald-400">
+                          {exp.company}
+                        </p>
 
-                    <div className="group relative overflow-hidden rounded-2xl border border-white/[0.07] bg-[#070a10] p-5 transition-all duration-500 hover:-translate-y-0.5 hover:border-cyan-400/20 hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)] sm:p-6">
-                      {/* Top accent */}
-                      <div className="absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                        <p className="mt-5 text-[15px] font-light leading-7 text-gray-400">
+                          {exp.description}
+                        </p>
 
-                      {/* Period */}
-                      <div className="mb-4">
-                        <span className="rounded-md border border-cyan-400/15 bg-cyan-400/[0.06] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-cyan-300">
-                          {edu.period}
-                        </span>
+                        {/* Highlights */}
+                        <ul className="mt-6 space-y-2.5">
+                          {exp.highlights.map((highlight) => (
+                            <li
+                              key={highlight}
+                              className="flex items-start gap-3"
+                            >
+                              <Check className="mt-1 h-3.5 w-3.5 shrink-0 text-emerald-400" />
+
+                              <span className="text-sm font-light leading-6 text-gray-400">
+                                {highlight}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+
+                        {/* Tech stack */}
+                        {exp.techStack && (
+                          <ul className="mt-6 flex flex-wrap gap-2 border-t border-white/[0.08] pt-6">
+                            {exp.techStack.map((tech) => (
+                              <li
+                                key={tech}
+                                className="rounded-lg border border-white/[0.08] bg-white/[0.03] px-2.5 py-1 text-xs text-gray-400 transition-colors duration-300 group-hover:border-emerald-400/15 group-hover:text-emerald-300"
+                              >
+                                {tech}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </article>
+                    </motion.li>
+                  ))}
+                </motion.ol>
+              </motion.div>
+            )}
+
+            {activeTab === "education" && (
+              <motion.div
+                key="education"
+                id="panel-education"
+                role="tabpanel"
+                aria-labelledby="tab-education"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                className="relative"
+              >
+                {/* Timeline line */}
+                <div
+                  aria-hidden
+                  className="absolute bottom-4 left-[7px] top-4 hidden w-px bg-gradient-to-b from-cyan-400/60 via-cyan-400/20 to-transparent sm:block"
+                />
+
+                <motion.ol
+                  variants={list}
+                  initial="hidden"
+                  animate="show"
+                  className="space-y-6"
+                >
+                  {education.map((edu, index) => (
+                    <motion.li
+                      key={`${edu.degree}-${index}`}
+                      variants={card}
+                      className="relative sm:pl-10"
+                    >
+                      {/* Timeline dot */}
+                      <div
+                        aria-hidden
+                        className="absolute left-0 top-8 hidden h-4 w-4 items-center justify-center rounded-full border border-cyan-400/40 bg-[#03060a] shadow-[0_0_14px_rgba(34,211,238,0.35)] sm:flex"
+                      >
+                        <div className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
                       </div>
 
-                      {/* Education */}
-                      <h3 className="text-lg font-semibold tracking-tight text-white sm:text-xl">
-                        {edu.degree}
-                      </h3>
+                      <article className="group relative overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.025] p-6 shadow-2xl shadow-black/40 backdrop-blur-sm transition-colors duration-500 hover:border-cyan-400/25 hover:bg-white/[0.035] sm:p-8">
+                        {/* Top highlight */}
+                        <div
+                          aria-hidden
+                          className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent"
+                        />
 
-                      <p className="mt-1 text-sm font-medium text-cyan-400">
-                        {edu.school}
-                      </p>
+                        <span className="inline-block rounded-lg border border-cyan-400/20 bg-cyan-400/[0.07] px-3 py-1 text-xs font-medium text-cyan-300">
+                          {edu.period}
+                        </span>
 
-                      <p className="mt-4 text-sm leading-6 text-gray-400">
-                        {edu.description}
-                      </p>
-                    </div>
-                  </motion.article>
-                ))}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </section>
+                        <h3 className="mt-5 text-xl font-semibold tracking-tight text-gray-100 sm:text-2xl">
+                          {edu.degree}
+                        </h3>
+
+                        <p className="mt-1.5 text-sm font-medium text-cyan-400">
+                          {edu.school}
+                        </p>
+
+                        <p className="mt-5 text-[15px] font-light leading-7 text-gray-400">
+                          {edu.description}
+                        </p>
+                      </article>
+                    </motion.li>
+                  ))}
+                </motion.ol>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </section>
+    </MotionConfig>
   );
 }
