@@ -1,7 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useReducedMotion,
+  type Variants,
+} from "framer-motion";
+import { Cinzel, Inter } from "next/font/google";
 import {
   Code2,
   Palette,
@@ -11,107 +17,178 @@ import {
   ArrowUpRight,
 } from "lucide-react";
 
+const cinzel = Cinzel({
+  subsets: ["latin"],
+  weight: ["700"],
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+});
+
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+/* One reveal for the whole section, staggered once when it enters view */
+const container: Variants = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.12 },
+  },
+};
+
+const item: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.75, ease: EASE },
+  },
+};
+
+const skills = [
+  {
+    title: "Full Stack Development",
+    description:
+      "Building responsive frontend applications, APIs, backend systems, and complete digital products.",
+    icon: Layers3,
+    tags: ["React", "Next.js", "Node.js", "ASP.NET"],
+    iconStyle:
+      "border-emerald-400/20 bg-emerald-400/[0.07] text-emerald-400",
+    hover: "hover:border-emerald-400/30",
+  },
+  {
+    title: "UI/UX Design",
+    description:
+      "Designing clean, intuitive, and responsive interfaces focused on usability and user experience.",
+    icon: Palette,
+    tags: ["Figma", "Prototyping", "Design Systems", "UX"],
+    iconStyle: "border-cyan-400/20 bg-cyan-400/[0.07] text-cyan-400",
+    hover: "hover:border-cyan-400/30",
+  },
+  {
+    title: "Graphic Design",
+    description:
+      "Creating visual assets and digital graphics that communicate ideas clearly and strengthen brand identity.",
+    icon: Sparkles,
+    tags: ["Branding", "Graphics", "Visual Design"],
+    iconStyle: "border-sky-400/20 bg-sky-400/[0.07] text-sky-400",
+    hover: "hover:border-sky-400/30",
+  },
+  {
+    title: "Software Engineering",
+    description:
+      "Developing structured, maintainable applications with a focus on performance, scalability, and clean architecture.",
+    icon: Server,
+    tags: ["TypeScript", "C#", "REST APIs", "Git"],
+    iconStyle:
+      "border-violet-400/20 bg-violet-400/[0.07] text-violet-400",
+    hover: "hover:border-violet-400/30",
+  },
+];
+
+const stats = [
+  { value: "3+", label: "Years experience" },
+  { value: "10+", label: "Projects built" },
+  { value: "3", label: "Creative fields" },
+  { value: "Full", label: "Stack focus" },
+];
+
 export default function AboutSection() {
   const [showFull, setShowFull] = useState(false);
+  const reduceMotion = useReducedMotion();
 
   return (
     <section
       id="about"
-      className="relative overflow-hidden border-y border-white/[0.06] bg-[#03050a] px-5 py-20 text-white sm:px-8 sm:py-24 lg:px-10 lg:py-28"
+      className={`relative overflow-hidden border-y border-white/[0.06] bg-[#03060a] px-5 py-24 text-white sm:px-8 sm:py-28 lg:px-10 lg:py-32 ${inter.className}`}
     >
-      {/* Background Effects */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-[-15%] top-[15%] h-[350px] w-[350px] rounded-full bg-emerald-500/[0.035] blur-[120px]" />
-
-        <div className="absolute right-[-15%] bottom-[5%] h-[400px] w-[400px] rounded-full bg-blue-500/[0.025] blur-[140px]" />
+      {/* Background */}
+      <div className="pointer-events-none absolute inset-0" aria-hidden>
+        <div className="absolute left-[-15%] top-[10%] h-[380px] w-[380px] rounded-full bg-emerald-500/[0.06] blur-[130px]" />
+        <div className="absolute bottom-[0%] right-[-15%] h-[420px] w-[420px] rounded-full bg-sky-500/[0.04] blur-[140px]" />
 
         <div
-          className="absolute inset-0 opacity-[0.012]"
+          className="absolute inset-0 opacity-[0.03]"
           style={{
             backgroundImage: `
-              linear-gradient(
-                rgba(255,255,255,0.8) 1px,
-                transparent 1px
-              ),
-              linear-gradient(
-                90deg,
-                rgba(255,255,255,0.8) 1px,
-                transparent 1px
-              )
+              linear-gradient(rgba(255,255,255,0.9) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255,255,255,0.9) 1px, transparent 1px)
             `,
-            backgroundSize: "60px 60px",
+            backgroundSize: "64px 64px",
+            maskImage:
+              "radial-gradient(ellipse 70% 60% at 50% 45%, black 25%, transparent 100%)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse 70% 60% at 50% 45%, black 25%, transparent 100%)",
           }}
         />
+
+        {/* Vignette */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_55%,rgba(0,0,0,0.5)_100%)]" />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-6xl">
-        {/* Section Heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{
-            duration: 0.8,
-            ease: "easeOut",
-          }}
-          className="mb-14 text-center sm:mb-16"
-        >
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/[0.07] bg-white/[0.02] px-3.5 py-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.5)]" />
-
-            <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-gray-500">
+      <motion.div
+        variants={container}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.12 }}
+        className="relative z-10 mx-auto max-w-6xl"
+      >
+        {/* Section heading */}
+        <motion.div variants={item} className="mb-16 text-center sm:mb-20">
+          <div className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-white/[0.09] bg-white/[0.03] py-1.5 pl-3 pr-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-md">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.7)]" />
+            <span className="text-xs font-medium text-gray-300">
               Get to know me
             </span>
           </div>
 
-          <h2 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
-            About{" "}
-            <span className="bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 bg-clip-text text-transparent">
-              Me
-            </span>
+          <h2
+            className={`${cinzel.className} bg-gradient-to-br from-white via-gray-100 to-emerald-400 bg-clip-text text-4xl font-bold leading-tight text-transparent sm:text-5xl lg:text-6xl`}
+          >
+            About Me
           </h2>
 
-          <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-gray-500 sm:text-base">
+          <p className="mx-auto mt-6 max-w-xl text-[15px] font-light leading-8 text-gray-400 sm:text-base">
             A little more about my background, skills, approach, and what I
             bring to digital products.
           </p>
         </motion.div>
 
-        {/* Main About Layout */}
+        {/* Main layout */}
         <div className="grid items-start gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:gap-10">
-          {/* About Content */}
+          {/* About content */}
           <motion.div
-            initial={{ opacity: 0, x: -25 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.15 }}
-            transition={{
-              duration: 0.8,
-              ease: "easeOut",
-            }}
-            className="rounded-2xl border border-white/[0.07] bg-white/[0.018] p-6 shadow-2xl shadow-black/20 sm:p-8 lg:p-9"
+            variants={item}
+            className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.025] p-7 shadow-2xl shadow-black/40 backdrop-blur-sm sm:p-9 lg:p-10"
           >
-            {/* Small Label */}
-            <div className="mb-6 flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-emerald-400/10 bg-emerald-400/[0.06] text-emerald-400">
-                <Code2 size={18} />
+            {/* Top highlight */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent"
+            />
+
+            {/* Role header */}
+            <div className="mb-8 flex items-center gap-4">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-emerald-400/20 bg-emerald-400/[0.07] text-emerald-400 shadow-[0_0_24px_-6px_rgba(52,211,153,0.5)]">
+                <Code2 size={19} />
               </div>
 
               <div>
-                <p className="text-sm font-semibold text-gray-200">
-                  Developer & Creative
+                <p className="text-sm font-semibold text-gray-100">
+                  Developer & creative
                 </p>
-
-                <p className="text-[11px] text-gray-600">
-                  Development • Design • Problem Solving
+                <p className="mt-0.5 text-xs text-gray-500">
+                  Development, design, and problem solving
                 </p>
               </div>
             </div>
 
-            {/* Introduction */}
-            <div className="space-y-5 text-[15px] leading-7 text-gray-500 sm:text-base">
+            {/* Copy */}
+            <div className="space-y-5 text-[15px] font-light leading-8 text-gray-400 sm:text-base">
               <p>
                 I'm{" "}
-                <span className="font-semibold text-gray-200">
+                <span className="font-medium text-gray-100">
                   Dada Kingsley Oluwasanmi
                 </span>
                 , a Full Stack Developer, UI/UX Designer, and Graphic Designer
@@ -128,271 +205,143 @@ export default function AboutSection() {
                 digital product.
               </p>
 
-              {showFull && (
-                <>
-                  <p>
-                    My development experience covers both frontend and backend
-                    development. I work with technologies such as{" "}
-                    <span className="font-medium text-gray-300">
-                      JavaScript, TypeScript, React, Next.js, Node.js, C#,
-                      ASP.NET, Tailwind CSS, and REST APIs
-                    </span>
-                    .
-                  </p>
+              <AnimatePresence initial={false}>
+                {showFull && (
+                  <motion.div
+                    key="more"
+                    id="about-more"
+                    initial={reduceMotion ? false : { height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={reduceMotion ? undefined : { height: 0, opacity: 0 }}
+                    transition={{ duration: 0.5, ease: EASE }}
+                    className="overflow-hidden"
+                  >
+                    <div className="space-y-5">
+                      <p>
+                        My development experience covers both frontend and
+                        backend development. I work with technologies such as{" "}
+                        <span className="font-medium text-gray-200">
+                          JavaScript, TypeScript, React, Next.js, Node.js, C#,
+                          ASP.NET, Tailwind CSS, and REST APIs
+                        </span>
+                        .
+                      </p>
 
-                  <p>
-                    On the frontend, I focus on responsive layouts,
-                    accessibility, component architecture, animations, and
-                    interfaces that feel natural to use. On the backend, I
-                    enjoy building APIs, connecting applications to databases,
-                    handling authentication, and creating reliable application
-                    logic.
-                  </p>
+                      <p>
+                        On the frontend, I focus on responsive layouts,
+                        accessibility, component architecture, animations, and
+                        interfaces that feel natural to use. On the backend, I
+                        enjoy building APIs, connecting applications to
+                        databases, handling authentication, and creating
+                        reliable application logic.
+                      </p>
 
-                  <p>
-                    My design background also influences the way I develop.
-                    Before writing code, I think about how a user will
-                    understand, navigate, and interact with a product. This
-                    helps me bridge the gap between{" "}
-                    <span className="font-medium text-gray-300">
-                      design and engineering
-                    </span>
-                    .
-                  </p>
+                      <p>
+                        My design background also influences the way I
+                        develop. Before writing code, I think about how a user
+                        will understand, navigate, and interact with a
+                        product. This helps me bridge the gap between{" "}
+                        <span className="font-medium text-gray-200">
+                          design and engineering
+                        </span>
+                        .
+                      </p>
 
-                  <p>
-                    I'm continuously improving my skills by building real
-                    projects, experimenting with new technologies, and learning
-                    better ways to solve problems. My goal is to keep growing
-                    as a developer while creating digital products that are
-                    useful, maintainable, and visually strong.
-                  </p>
-                </>
-              )}
+                      <p>
+                        I'm continuously improving my skills by building real
+                        projects, experimenting with new technologies, and
+                        learning better ways to solve problems. My goal is to
+                        keep growing as a developer while creating digital
+                        products that are useful, maintainable, and visually
+                        strong.
+                      </p>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
-            {/* Read More */}
+            {/* Read more */}
             <button
+              type="button"
               onClick={() => setShowFull((prev) => !prev)}
-              className="group mt-7 inline-flex items-center gap-2 text-sm font-semibold text-emerald-400 transition-colors duration-300 hover:text-emerald-300"
+              aria-expanded={showFull}
+              aria-controls="about-more"
+              className="group mt-8 inline-flex items-center gap-2 rounded-lg text-sm font-semibold text-emerald-400 transition-colors duration-300 hover:text-emerald-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#03060a]"
             >
-              {showFull ? "Show Less" : "Read More"}
+              {showFull ? "Show less" : "Read more"}
 
               <ArrowUpRight
                 size={16}
                 className={`transition-transform duration-300 ${
                   showFull
-                    ? "rotate-[-90deg]"
+                    ? "-rotate-90"
                     : "group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
                 }`}
               />
             </button>
           </motion.div>
 
-          {/* Right Side */}
+          {/* Skill cards */}
           <motion.div
-            initial={{ opacity: 0, x: 25 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.15 }}
-            transition={{
-              duration: 0.8,
-              delay: 0.1,
-              ease: "easeOut",
-            }}
+            variants={item}
             className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1"
           >
-            {/* Full Stack Development */}
-            <div className="group rounded-2xl border border-white/[0.07] bg-white/[0.018] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-emerald-400/20 hover:bg-white/[0.025] sm:p-6">
-              <div className="mb-4 flex items-center justify-between">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-emerald-400/10 bg-emerald-400/[0.06] text-emerald-400">
-                  <Layers3 size={19} />
-                </div>
-
-                <span className="text-[10px] font-medium uppercase tracking-[0.15em] text-gray-700">
-                  01
-                </span>
-              </div>
-
-              <h3 className="text-base font-semibold text-gray-200">
-                Full Stack Development
-              </h3>
-
-              <p className="mt-2 text-sm leading-6 text-gray-600">
-                Building responsive frontend applications, APIs, backend
-                systems, and complete digital products.
-              </p>
-
-              <div className="mt-4 flex flex-wrap gap-2">
-                {["React", "Next.js", "Node.js", "ASP.NET"].map((skill) => (
-                  <span
-                    key={skill}
-                    className="rounded-md border border-white/[0.06] bg-white/[0.02] px-2.5 py-1 text-[10px] text-gray-500"
+            {skills.map(({ title, description, icon: Icon, tags, iconStyle, hover }) => (
+              <div
+                key={title}
+                className={`group relative rounded-2xl border border-white/[0.08] bg-white/[0.025] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-sm transition-all duration-300 hover:bg-white/[0.04] sm:p-6 ${hover}`}
+              >
+                <div className="mb-4 flex items-center gap-3.5">
+                  <div
+                    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border ${iconStyle}`}
                   >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
+                    <Icon size={19} />
+                  </div>
 
-            {/* UI/UX Design */}
-            <div className="group rounded-2xl border border-white/[0.07] bg-white/[0.018] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-cyan-400/20 hover:bg-white/[0.025] sm:p-6">
-              <div className="mb-4 flex items-center justify-between">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-cyan-400/10 bg-cyan-400/[0.05] text-cyan-400">
-                  <Palette size={19} />
+                  <h3 className="text-base font-semibold text-gray-100">
+                    {title}
+                  </h3>
                 </div>
 
-                <span className="text-[10px] font-medium uppercase tracking-[0.15em] text-gray-700">
-                  02
-                </span>
-              </div>
+                <p className="text-sm font-light leading-7 text-gray-400">
+                  {description}
+                </p>
 
-              <h3 className="text-base font-semibold text-gray-200">
-                UI/UX Design
-              </h3>
-
-              <p className="mt-2 text-sm leading-6 text-gray-600">
-                Designing clean, intuitive, and responsive interfaces focused
-                on usability and user experience.
-              </p>
-
-              <div className="mt-4 flex flex-wrap gap-2">
-                {["Figma", "Prototyping", "Design Systems", "UX"].map(
-                  (skill) => (
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {tags.map((tag) => (
                     <span
-                      key={skill}
-                      className="rounded-md border border-white/[0.06] bg-white/[0.02] px-2.5 py-1 text-[10px] text-gray-500"
+                      key={tag}
+                      className="rounded-lg border border-white/[0.08] bg-white/[0.03] px-2.5 py-1 text-xs text-gray-400"
                     >
-                      {skill}
+                      {tag}
                     </span>
-                  )
-                )}
-              </div>
-            </div>
-
-            {/* Creative Design */}
-            <div className="group rounded-2xl border border-white/[0.07] bg-white/[0.018] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-blue-400/20 hover:bg-white/[0.025] sm:p-6">
-              <div className="mb-4 flex items-center justify-between">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-blue-400/10 bg-blue-400/[0.05] text-blue-400">
-                  <Sparkles size={19} />
+                  ))}
                 </div>
-
-                <span className="text-[10px] font-medium uppercase tracking-[0.15em] text-gray-700">
-                  03
-                </span>
               </div>
-
-              <h3 className="text-base font-semibold text-gray-200">
-                Graphic Design
-              </h3>
-
-              <p className="mt-2 text-sm leading-6 text-gray-600">
-                Creating visual assets and digital graphics that communicate
-                ideas clearly and strengthen brand identity.
-              </p>
-
-              <div className="mt-4 flex flex-wrap gap-2">
-                {["Branding", "Graphics", "Visual Design"].map((skill) => (
-                  <span
-                    key={skill}
-                    className="rounded-md border border-white/[0.06] bg-white/[0.02] px-2.5 py-1 text-[10px] text-gray-500"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Backend / Engineering */}
-            <div className="group rounded-2xl border border-white/[0.07] bg-white/[0.018] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-violet-400/20 hover:bg-white/[0.025] sm:p-6">
-              <div className="mb-4 flex items-center justify-between">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-violet-400/10 bg-violet-400/[0.05] text-violet-400">
-                  <Server size={19} />
-                </div>
-
-                <span className="text-[10px] font-medium uppercase tracking-[0.15em] text-gray-700">
-                  04
-                </span>
-              </div>
-
-              <h3 className="text-base font-semibold text-gray-200">
-                Software Engineering
-              </h3>
-
-              <p className="mt-2 text-sm leading-6 text-gray-600">
-                Developing structured, maintainable applications with a focus
-                on performance, scalability, and clean architecture.
-              </p>
-
-              <div className="mt-4 flex flex-wrap gap-2">
-                {["TypeScript", "C#", "REST APIs", "Git"].map((skill) => (
-                  <span
-                    key={skill}
-                    className="rounded-md border border-white/[0.06] bg-white/[0.02] px-2.5 py-1 text-[10px] text-gray-500"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
+            ))}
           </motion.div>
         </div>
 
-        {/* Bottom Stats */}
+        {/* Bottom stats */}
         <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{
-            duration: 0.8,
-            delay: 0.15,
-          }}
-          className="mt-8 grid grid-cols-2 overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.018] sm:grid-cols-4"
+          variants={item}
+          className="mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.08] shadow-2xl shadow-black/30 sm:grid-cols-4"
         >
-          {/* Stat 1 */}
-          <div className="border-b border-white/[0.06] p-5 text-center sm:border-b-0 sm:border-r sm:p-6">
-            <p className="text-2xl font-bold text-gray-200 sm:text-3xl">
-              3+
-            </p>
+          {stats.map((stat) => (
+            <div
+              key={stat.label}
+              className="bg-[#070b11] p-6 text-center transition-colors duration-300 hover:bg-[#0a0f18] sm:p-7"
+            >
+              <p className="bg-gradient-to-br from-white to-emerald-300 bg-clip-text text-3xl font-semibold tabular-nums text-transparent sm:text-4xl">
+                {stat.value}
+              </p>
 
-            <p className="mt-1 text-[10px] uppercase tracking-[0.12em] text-gray-600">
-              Years Experience
-            </p>
-          </div>
-
-          {/* Stat 2 */}
-          <div className="border-b border-white/[0.06] p-5 text-center sm:border-b-0 sm:border-r sm:p-6">
-            <p className="text-2xl font-bold text-gray-200 sm:text-3xl">
-              10+
-            </p>
-
-            <p className="mt-1 text-[10px] uppercase tracking-[0.12em] text-gray-600">
-              Projects Built
-            </p>
-          </div>
-
-          {/* Stat 3 */}
-          <div className="border-r border-white/[0.06] p-5 text-center sm:p-6">
-            <p className="text-2xl font-bold text-emerald-400 sm:text-3xl">
-              3
-            </p>
-
-            <p className="mt-1 text-[10px] uppercase tracking-[0.12em] text-gray-600">
-              Creative Fields
-            </p>
-          </div>
-
-          {/* Stat 4 */}
-          <div className="p-5 text-center sm:p-6">
-            <p className="text-2xl font-bold text-gray-200 sm:text-3xl">
-              Full
-            </p>
-
-            <p className="mt-1 text-[10px] uppercase tracking-[0.12em] text-gray-600">
-              Stack Focus
-            </p>
-          </div>
+              <p className="mt-2 text-xs text-gray-500">{stat.label}</p>
+            </div>
+          ))}
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 }
