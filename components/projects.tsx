@@ -111,7 +111,7 @@ const projects = [
       "Responsive Design",
       "UI/UX",
     ],
-    image: "/2talk-pic.jpeg",
+    image: "/barbing-web.jpeg",
     link: "https://github.com/King-web-cell-05/2talk",
     live: "https://house-of-2talk-entertainment.vercel.app",
   },
