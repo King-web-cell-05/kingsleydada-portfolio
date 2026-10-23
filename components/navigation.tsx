@@ -2,7 +2,8 @@
 "use client";
 
 import { useEffect, useState, type ElementType } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { createPortal } from "react-dom";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   X,
   Menu,
@@ -54,15 +55,21 @@ const navItems: NavItem[] = [
   },
 ];
 
-const ease = [0.22, 1, 0.36, 1] as const;
+const EASE = [0.22, 1, 0.36, 1] as const;
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [scrolled, setScrolled] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
   const reduceMotion = useReducedMotion();
 
-  // Scroll tracking
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Track scroll position and active section
   useEffect(() => {
     let frame = 0;
 
@@ -92,9 +99,7 @@ export default function Navigation() {
 
     updateNavigation();
 
-    window.addEventListener("scroll", handleScroll, {
-      passive: true,
-    });
+    window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", handleScroll);
 
     return () => {
@@ -104,9 +109,12 @@ export default function Navigation() {
     };
   }, []);
 
-  // Close mobile menu with Escape
+  // Escape key, scroll lock and desktop breakpoint
   useEffect(() => {
     if (!isOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -114,31 +122,26 @@ export default function Navigation() {
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [isOpen]);
-
-  // Close menu when switching to desktop
-  useEffect(() => {
     const mediaQuery = window.matchMedia("(min-width: 768px)");
 
-    const handleChange = () => {
+    const handleBreakpoint = () => {
       if (mediaQuery.matches) {
         setIsOpen(false);
       }
     };
 
-    mediaQuery.addEventListener("change", handleChange);
+    window.addEventListener("keydown", handleKeyDown);
+    mediaQuery.addEventListener("change", handleBreakpoint);
+
+    handleBreakpoint();
 
     return () => {
-      mediaQuery.removeEventListener("change", handleChange);
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+      mediaQuery.removeEventListener("change", handleBreakpoint);
     };
-  }, []);
+  }, [isOpen]);
 
-  // Smooth navigation
   const scrollToSection = (id: string) => {
     setIsOpen(false);
     setActiveSection(id);
@@ -168,26 +171,152 @@ export default function Navigation() {
     });
   };
 
+  const mobileOverlay = (
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          {/* BACKDROP */}
+          <motion.div
+            key="mobile-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: reduceMotion ? 0 : 0.2 }}
+            onClick={() => setIsOpen(false)}
+            className="fixed inset-0 z-[90] bg-black/75 backdrop-blur-[5px] md:hidden"
+            aria-hidden="true"
+          />
+
+          {/* MOBILE PANEL */}
+          <motion.div
+            key="mobile-panel"
+            id="mobile-navigation"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Mobile navigation"
+            initial={
+              reduceMotion
+                ? { opacity: 1 }
+                : { opacity: 0, y: -14 }
+            }
+            animate={{ opacity: 1, y: 0 }}
+            exit={
+              reduceMotion
+                ? { opacity: 0 }
+                : { opacity: 0, y: -12 }
+            }
+            transition={{
+              duration: reduceMotion ? 0 : 0.28,
+              ease: EASE,
+            }}
+            className="fixed inset-x-3 top-[78px] z-[100] max-h-[calc(100dvh-92px)] overflow-y-auto overscroll-contain rounded-[22px] border border-[#ff5268]/25 bg-[#15070b] p-4 shadow-[0_30px_90px_rgba(0,0,0,0.7)] sm:inset-x-8 md:hidden"
+          >
+            {/* HEADING */}
+            <div className="mb-4 flex items-center justify-between px-1">
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#ff8290]">
+                  Navigation
+                </p>
+                <p className="mt-1 text-xs text-white/40">
+                  Explore my portfolio
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setIsOpen(false)}
+                aria-label="Close mobile navigation"
+                className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* LINKS */}
+            <div className="space-y-1 rounded-2xl border border-white/[0.09] bg-white/[0.035] p-2">
+              {navItems.map((item) => {
+                const Icon = item.icon;
+                const isActive = activeSection === item.name;
+
+                return (
+                  <button
+                    key={item.name}
+                    type="button"
+                    onClick={() => scrollToSection(item.name)}
+                    aria-current={isActive ? "location" : undefined}
+                    className={`group flex w-full items-center gap-3 rounded-xl border px-3 py-2.5 text-left transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7583] ${
+                      isActive
+                        ? "border-[#ff5268]/20 bg-[#ff5268]/[0.11]"
+                        : "border-transparent hover:bg-white/[0.06]"
+                    }`}
+                  >
+                    <span
+                      className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border ${
+                        isActive
+                          ? "border-[#ff5268]/25 bg-[#ff5268]/[0.13] text-[#ff8290]"
+                          : "border-white/[0.08] bg-white/[0.04] text-white/55"
+                      }`}
+                    >
+                      <Icon size={18} strokeWidth={1.8} />
+                    </span>
+
+                    <span className="min-w-0 flex-1">
+                      <span
+                        className={`block text-[13px] font-semibold capitalize ${
+                          isActive ? "text-white" : "text-white/75"
+                        }`}
+                      >
+                        {item.name}
+                      </span>
+                      <span className="mt-0.5 block truncate text-[11px] text-white/35">
+                        {item.description}
+                      </span>
+                    </span>
+
+                    {isActive ? (
+                      <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#ff5268]" />
+                    ) : (
+                      <ArrowUpRight
+                        size={15}
+                        className="shrink-0 text-white/25"
+                      />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* CTA */}
+            <button
+              type="button"
+              onClick={() => scrollToSection("contact")}
+              className="mt-4 flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl bg-[#f02d43] px-5 py-3 text-[13px] font-semibold text-white transition-colors hover:bg-[#ff4055] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7583]"
+            >
+              Let's Work Together
+              <ArrowUpRight size={17} />
+            </button>
+
+            <p className="mt-4 text-center text-[10px] tracking-[0.08em] text-white/30">
+              DESIGN • DEVELOPMENT • CREATIVITY
+            </p>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+
   return (
     <>
       {/* NAVBAR */}
       <nav
         aria-label="Main navigation"
-        className={`fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color,box-shadow] duration-500 ${
+        className={`fixed inset-x-0 top-0 z-[110] border-b transition-[background-color,border-color,box-shadow] duration-300 ${
           scrolled
-            ? "border-white/[0.1] bg-[#100508]/90 shadow-[0_12px_40px_rgba(0,0,0,0.28)] backdrop-blur-2xl"
-            : "border-white/[0.055] bg-[#0c0406]/70 backdrop-blur-xl"
+            ? "border-white/[0.1] bg-[#100508]/95 shadow-[0_12px_40px_rgba(0,0,0,0.3)] backdrop-blur-2xl"
+            : "border-white/[0.07] bg-[#0c0406]/90 backdrop-blur-xl"
         }`}
       >
-        {/* Subtle top glow */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 overflow-hidden"
-        >
-          <div className="absolute -right-20 -top-32 h-48 w-96 rounded-full bg-[#b70b22]/[0.12] blur-[80px]" />
-        </div>
-
-        <div className="relative mx-auto max-w-[1320px] px-5 sm:px-8 lg:px-12">
+        <div className="mx-auto max-w-[1320px] px-5 sm:px-8 lg:px-12">
           <div
             className={`flex items-center justify-between gap-4 transition-[height] duration-300 ${
               scrolled
@@ -202,15 +331,14 @@ export default function Navigation() {
               aria-label="Go to homepage"
               className="group relative flex shrink-0 items-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7583]"
             >
-              <span className="text-[23px] font-extrabold tracking-[-0.075em] text-white transition-colors duration-300 sm:text-[25px]">
-                Dada
-                <span className="text-[#ff5268]">.</span>
+              <span className="text-[23px] font-extrabold tracking-[-0.075em] text-white sm:text-[25px]">
+                Dada<span className="text-[#ff5268]">.</span>
               </span>
 
               <span className="absolute -bottom-1 left-0 h-[2px] w-0 rounded-full bg-[#ff5268] transition-all duration-300 group-hover:w-full" />
             </button>
 
-            {/* DESKTOP NAVIGATION */}
+            {/* DESKTOP LINKS */}
             <div className="hidden min-w-0 items-center gap-0.5 md:flex lg:gap-1">
               {navItems.map((item) => {
                 const isActive = activeSection === item.name;
@@ -229,7 +357,6 @@ export default function Navigation() {
                   >
                     {item.name}
 
-                    {/* Active underline */}
                     {isActive && (
                       <motion.span
                         layoutId="desktop-active-nav"
@@ -238,188 +365,45 @@ export default function Navigation() {
                           stiffness: 350,
                           damping: 30,
                         }}
-                        className="absolute bottom-0 left-1/2 h-[2px] w-5 -translate-x-1/2 rounded-full bg-[#ff5268] shadow-[0_0_12px_rgba(255,82,104,0.4)]"
+                        className="absolute bottom-0 left-1/2 h-[2px] w-5 -translate-x-1/2 rounded-full bg-[#ff5268]"
                       />
-                    )}
-
-                    {!isActive && (
-                      <span className="absolute bottom-0 left-1/2 h-[2px] w-0 -translate-x-1/2 rounded-full bg-[#ff5268]/70 transition-all duration-300 group-hover:w-4" />
                     )}
                   </button>
                 );
               })}
             </div>
 
-            {/* DESKTOP CONTACT CTA */}
+            {/* DESKTOP CTA */}
             <button
               type="button"
               onClick={() => scrollToSection("contact")}
-              className="group hidden shrink-0 items-center justify-center gap-2 rounded-xl border border-[#ff5268]/30 bg-[#f02d43]/[0.12] px-3.5 py-2.5 text-[12px] font-semibold text-[#ff8c99] transition-all duration-300 hover:border-[#ff5268]/60 hover:bg-[#f02d43] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7583] md:inline-flex lg:px-5 lg:text-[13px]"
+              className="group hidden shrink-0 items-center justify-center gap-2 rounded-xl border border-[#ff5268]/30 bg-[#f02d43]/[0.12] px-3.5 py-2.5 text-[12px] font-semibold text-[#ff8c99] transition-colors hover:bg-[#f02d43] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7583] md:inline-flex lg:px-5 lg:text-[13px]"
             >
               Let's Talk
-
-              <ArrowUpRight
-                size={16}
-                className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-              />
+              <ArrowUpRight size={16} />
             </button>
 
-            {/* MOBILE MENU TOGGLE */}
+            {/* MOBILE TOGGLE */}
             <button
               type="button"
-              onClick={() => setIsOpen((prev) => !prev)}
+              onClick={() => setIsOpen((previous) => !previous)}
               aria-label={isOpen ? "Close menu" : "Open menu"}
               aria-expanded={isOpen}
               aria-controls="mobile-navigation"
-              className={`relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7583] md:hidden ${
+              className={`relative z-[120] flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7583] md:hidden ${
                 isOpen
-                  ? "border-[#ff5268]/40 bg-[#ff5268]/15 text-[#ff8290]"
-                  : "border-white/[0.12] bg-white/[0.055] text-white/85 hover:border-[#ff5268]/30 hover:bg-white/[0.09]"
+                  ? "border-[#ff5268]/50 bg-[#ff5268]/20 text-[#ff8290]"
+                  : "border-white/[0.15] bg-white/[0.07] text-white hover:bg-white/[0.12]"
               }`}
             >
-              {isOpen ? <X size={20} /> : <Menu size={20} />}
+              {isOpen ? <X size={21} /> : <Menu size={21} />}
             </button>
           </div>
         </div>
-
-        {/* MOBILE MENU */}
-        <AnimatePresence initial={false}>
-          {isOpen && (
-            <motion.div
-              id="mobile-navigation"
-              key="mobile-menu"
-              initial={
-                reduceMotion
-                  ? { opacity: 1, height: "auto" }
-                  : { opacity: 0, height: 0 }
-              }
-              animate={{ opacity: 1, height: "auto" }}
-              exit={
-                reduceMotion
-                  ? { opacity: 0, height: 0 }
-                  : { opacity: 0, height: 0 }
-              }
-              transition={{
-                duration: reduceMotion ? 0 : 0.3,
-                ease,
-              }}
-              className="overflow-hidden border-t border-white/[0.08] bg-[#130609]/95 backdrop-blur-2xl md:hidden"
-            >
-              <div className="mx-auto max-h-[calc(100dvh-80px)] max-w-[1320px] overflow-y-auto px-5 pb-5 pt-4 sm:px-8">
-
-                {/* Mobile heading */}
-                <div className="mb-4 flex items-center justify-between px-1">
-                  <div>
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#ff7583]">
-                      Navigation
-                    </p>
-                    <p className="mt-1 text-xs text-white/40">
-                      Explore my portfolio
-                    </p>
-                  </div>
-
-                  <span className="h-px w-10 bg-gradient-to-r from-[#ff5268]/70 to-transparent" />
-                </div>
-
-                {/* Navigation items */}
-                <div className="space-y-1 rounded-2xl border border-white/[0.09] bg-white/[0.035] p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-                  {navItems.map((item) => {
-                    const Icon = item.icon;
-                    const isActive = activeSection === item.name;
-
-                    return (
-                      <button
-                        key={item.name}
-                        type="button"
-                        onClick={() => scrollToSection(item.name)}
-                        aria-current={isActive ? "location" : undefined}
-                        className={`group flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7583] ${
-                          isActive
-                            ? "border border-[#ff5268]/15 bg-[#ff5268]/[0.09]"
-                            : "border border-transparent hover:bg-white/[0.055]"
-                        }`}
-                      >
-                        {/* Icon */}
-                        <div
-                          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border transition-all duration-300 ${
-                            isActive
-                              ? "border-[#ff5268]/25 bg-[#ff5268]/[0.13] text-[#ff7583]"
-                              : "border-white/[0.08] bg-white/[0.04] text-white/50 group-hover:border-white/[0.15] group-hover:text-white"
-                          }`}
-                        >
-                          <Icon size={18} strokeWidth={1.8} />
-                        </div>
-
-                        {/* Text */}
-                        <div className="min-w-0 flex-1">
-                          <p
-                            className={`text-[13px] font-semibold capitalize ${
-                              isActive
-                                ? "text-white"
-                                : "text-white/75 group-hover:text-white"
-                            }`}
-                          >
-                            {item.name}
-                          </p>
-
-                          <p className="mt-0.5 truncate text-[11px] text-white/35">
-                            {item.description}
-                          </p>
-                        </div>
-
-                        {/* Active marker */}
-                        {isActive ? (
-                          <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#ff5268] shadow-[0_0_10px_rgba(255,82,104,0.5)]" />
-                        ) : (
-                          <ArrowUpRight
-                            size={15}
-                            className="shrink-0 text-white/20 transition-colors group-hover:text-[#ff7583]"
-                          />
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {/* Mobile CTA */}
-                <button
-                  type="button"
-                  onClick={() => scrollToSection("contact")}
-                  className="group mt-4 flex min-h-[49px] w-full items-center justify-center gap-2 rounded-xl bg-[#f02d43] px-5 py-3 text-[13px] font-semibold text-white shadow-[0_8px_30px_rgba(220,18,48,0.2)] transition-all duration-300 hover:bg-[#ff4055] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7583]"
-                >
-                  Let's Work Together
-
-                  <ArrowUpRight
-                    size={17}
-                    className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                  />
-                </button>
-
-                {/* Mobile footer */}
-                <p className="mt-5 text-center text-[10px] tracking-[0.08em] text-white/30">
-                  DESIGN • DEVELOPMENT • CREATIVITY
-                </p>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </nav>
 
-      {/* MOBILE BACKDROP */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            key="navigation-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: reduceMotion ? 0 : 0.25 }}
-            onClick={() => setIsOpen(false)}
-            className="fixed inset-0 z-40 bg-black/65 backdrop-blur-[3px] md:hidden"
-            aria-hidden="true"
-          />
-        )}
-      </AnimatePresence>
+      {/* Render mobile navigation outside layout stacking contexts */}
+      {mounted && createPortal(mobileOverlay, document.body)}
     </>
   );
 }
