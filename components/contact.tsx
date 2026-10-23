@@ -1,66 +1,45 @@
-/* eslint-disable react/no-unescaped-entities */
 
 "use client";
 
-import { useState } from "react";
-import type React from "react";
+import { useState, type ChangeEvent, type FormEvent } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { Inter } from "next/font/google";
 import {
   Mail,
   Phone,
   MapPin,
-  Clock,
-  Server,
-  ShieldCheck,
+  Clock3,
   ArrowUpRight,
   MessageCircle,
   CheckCircle2,
+  ShieldCheck,
+  Send,
+  Sparkles,
+  ArrowRight,
 } from "lucide-react";
 import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-import { MotionConfig, motion, type Variants } from "framer-motion";
-import { Cinzel, Inter } from "next/font/google";
-
-const cinzel = Cinzel({
-  subsets: ["latin"],
-  weight: ["700"],
-});
 
 const inter = Inter({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
-const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.75, ease: EASE },
-  },
-};
-
-const stagger: Variants = {
-  hidden: {},
-  show: {
-    transition: { staggerChildren: 0.12 },
-  },
-};
+const EASE = [0.22, 1, 0.36, 1] as const;
 
 const contactCards = [
   {
     icon: Mail,
     title: "Email",
-    label: "Primary contact",
+    label: "SEND AN EMAIL",
     value: "kingsleydada159@gmail.com",
     href: "mailto:kingsleydada159@gmail.com",
-    description: "Usually responds within a few hours",
+    description: "For project inquiries and collaborations",
   },
   {
     icon: Phone,
     title: "Phone",
-    label: "Direct contact",
+    label: "DIRECT CONTACT",
     value: "+234 906 564 4691",
     href: "tel:+2349065644691",
     description: "Available during business hours",
@@ -68,10 +47,10 @@ const contactCards = [
   {
     icon: MapPin,
     title: "Location",
-    label: "Based in",
+    label: "BASED IN",
     value: "Lagos State, Nigeria",
     href: "",
-    description: "Working with clients remotely",
+    description: "Open to remote collaborations",
   },
 ];
 
@@ -98,31 +77,58 @@ const socialLinks = [
   },
 ];
 
-const inquiryCategories = [
-  "Full-stack development",
+const services = [
+  "Full-stack web applications",
   "Frontend development & UI/UX",
-  "API development & integrations",
-  "Performance optimization",
-  "Responsive web applications",
+  "Backend APIs & integrations",
+  "Responsive business websites",
+  "Performance & optimization",
+];
+
+const projectTypes = [
+  "Web Application",
+  "Full-Stack Development",
+  "Frontend / UI/UX",
+  "Backend / API Development",
+  "Business Website",
+  "Other",
 ];
 
 const fieldClass =
-  "w-full rounded-xl border border-white/[0.09] bg-white/[0.03] px-4 py-3 text-sm text-white placeholder:text-gray-600 outline-none shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-all duration-300 hover:border-white/[0.16] focus:border-emerald-400/50 focus:bg-white/[0.05] focus:ring-2 focus:ring-emerald-400/15";
+  "w-full min-w-0 rounded-xl border border-white/[0.11] bg-[#12090c]/75 px-4 py-3.5 text-[13px] text-white placeholder:text-white/25 outline-none transition-[border-color,background-color,box-shadow] duration-300 hover:border-white/20 focus:border-[#ff5268]/55 focus:bg-[#1b0b10] focus:ring-4 focus:ring-[#ff5268]/[0.08] sm:text-[14px]";
+
+type ContactForm = {
+  name: string;
+  email: string;
+  projectType: string;
+  message: string;
+};
+
+const initialForm: ContactForm = {
+  name: "",
+  email: "",
+  projectType: "",
+  message: "",
+};
 
 export default function ContactSection() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    projectType: "",
-    message: "",
+  const [formData, setFormData] = useState<ContactForm>(initialForm);
+  const [status, setStatus] = useState("");
+  const reduceMotion = useReducedMotion();
+
+  const reveal = (delay = 0) => ({
+    initial: reduceMotion ? false : { opacity: 0, y: 22 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, amount: 0.1 },
+    transition: {
+      duration: 0.7,
+      delay,
+      ease: EASE,
+    },
   });
 
-  const [submitted, setSubmitted] = useState(false);
-
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
 
@@ -130,445 +136,465 @@ export default function ContactSection() {
       ...prev,
       [name]: value,
     }));
+
+    if (status) setStatus("");
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const phone = "2349065644691";
+    const text = [
+      "Hello Kingsley,",
+      "",
+      "I'd like to discuss a project with you.",
+      "",
+      `Name: ${formData.name.trim()}`,
+      `Email: ${formData.email.trim()}`,
+      `Project Type: ${formData.projectType}`,
+      "",
+      "Project Details:",
+      formData.message.trim(),
+    ].join("\n");
 
-    const text = `Hello Kingsley 👋
+    const url = `https://wa.me/2349065644691?text=${encodeURIComponent(text)}`;
 
-My name is ${formData.name}.
+    setStatus(
+      "WhatsApp is opening. Review your message and tap Send to complete your inquiry."
+    );
 
-📧 Email: ${formData.email}
-💼 Project Type: ${formData.projectType}
-📝 Message: ${formData.message}`;
-
-    const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
-
-    window.open(url, "_blank");
-
-    setSubmitted(true);
-
-    setFormData({
-      name: "",
-      email: "",
-      projectType: "",
-      message: "",
-    });
-
-    setTimeout(() => setSubmitted(false), 5000);
+    window.open(url, "_blank", "noopener,noreferrer");
   };
 
   return (
-    <MotionConfig reducedMotion="user">
-      <section
-        id="contact"
-        className={`relative overflow-hidden bg-[#03060a] px-5 py-24 text-white sm:px-8 sm:py-28 lg:px-10 lg:py-32 ${inter.className}`}
+    <section
+      id="contact"
+      className={`relative isolate overflow-hidden border-t border-white/[0.07] bg-[#090406] px-5 py-24 text-white sm:px-8 sm:py-28 lg:px-12 lg:py-32 ${inter.className}`}
+    >
+      {/* BACKGROUND */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
       >
-        {/* Background */}
-        <div className="pointer-events-none absolute inset-0" aria-hidden>
-          <div className="absolute left-1/2 top-0 h-[500px] w-[700px] -translate-x-1/2 rounded-full bg-emerald-500/[0.06] blur-[150px]" />
-          <div className="absolute bottom-0 left-0 h-[380px] w-[380px] rounded-full bg-cyan-500/[0.04] blur-[130px]" />
-          <div className="absolute -right-40 top-[40%] h-[400px] w-[400px] rounded-full bg-sky-500/[0.04] blur-[140px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(145deg,#090406_0%,#160508_45%,#25060d_75%,#0b0406_100%)]" />
 
-          {/* Fading grid */}
-          <div
-            className="absolute inset-0 opacity-[0.03]"
-            style={{
-              backgroundImage: `
-                linear-gradient(rgba(255,255,255,0.9) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.9) 1px, transparent 1px)
-              `,
-              backgroundSize: "64px 64px",
-              maskImage:
-                "radial-gradient(ellipse 70% 60% at 50% 40%, black 25%, transparent 100%)",
-              WebkitMaskImage:
-                "radial-gradient(ellipse 70% 60% at 50% 40%, black 25%, transparent 100%)",
-            }}
-          />
+        <div className="absolute left-1/2 top-0 h-[600px] w-[800px] -translate-x-1/2 rounded-full bg-[#a50920]/[0.12] blur-[150px]" />
 
-          {/* Vignette */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_55%,rgba(0,0,0,0.5)_100%)]" />
-        </div>
+        <div className="absolute -left-[15%] bottom-[5%] h-[500px] w-[500px] rounded-full bg-[#b70b22]/[0.1] blur-[150px]" />
 
-        <div className="relative z-10 mx-auto max-w-6xl">
-          {/* ================= HEADER ================= */}
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.2 }}
-            className="mx-auto mb-16 max-w-3xl text-center sm:mb-20"
-          >
-            <div className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-white/[0.09] bg-white/[0.03] py-1.5 pl-3 pr-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-md">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.7)]" />
-              <span className="text-xs font-medium text-gray-300">
-                Let's work together
-              </span>
-            </div>
+        <div className="absolute -right-[15%] top-[40%] h-[550px] w-[550px] rounded-full bg-[#ff243a]/[0.06] blur-[150px]" />
 
-            <h2
-              className={`${cinzel.className} bg-gradient-to-br from-white via-gray-100 to-emerald-400 bg-clip-text text-4xl font-bold leading-tight text-transparent sm:text-5xl lg:text-6xl`}
-            >
-              Let's Build Something Great
-            </h2>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(0,0,0,0.4)_100%)]" />
+      </div>
 
-            <p className="mx-auto mt-6 max-w-2xl text-[15px] font-light leading-8 text-gray-400 sm:text-base">
-              Have a project, idea, or opportunity in mind? Send me a message
-              and let's discuss how I can help turn it into a reliable and
-              polished digital experience.
-            </p>
-          </motion.div>
+      <div className="relative z-10 mx-auto max-w-[1320px]">
+        {/* HEADER */}
+        <motion.div
+          {...reveal()}
+          className="mx-auto mb-14 max-w-[730px] text-center sm:mb-16"
+        >
+          <div className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-[#ff5268]/20 bg-[#ff5268]/[0.07] px-4 py-2 backdrop-blur-xl">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#ff5268] shadow-[0_0_10px_rgba(255,82,104,0.5)]" />
 
-          {/* ================= CONTACT CARDS ================= */}
-          <motion.div
-            variants={stagger}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.15 }}
-            className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-3"
-          >
-            {contactCards.map((card) => {
-              const Icon = card.icon;
-              const isLink = Boolean(card.href);
+            <span className="text-[11px] font-medium tracking-[0.07em] text-[#ff9aa5]">
+              LET'S WORK TOGETHER
+            </span>
+          </div>
 
-              return (
-                <motion.div
-                  key={card.title}
-                  variants={fadeUp}
-                  className="group relative overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.025] p-6 shadow-2xl shadow-black/40 backdrop-blur-sm transition-colors duration-500 hover:border-emerald-400/25 hover:bg-white/[0.035]"
-                >
-                  {/* Top highlight */}
-                  <div
-                    aria-hidden
-                    className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent"
-                  />
+          <h2 className="text-[clamp(2.4rem,5vw,4rem)] font-extrabold leading-[1.12] tracking-[-0.055em]">
+            Let's Build{" "}
+            <span className="bg-gradient-to-r from-white via-[#ffd9de] to-[#ff6173] bg-clip-text text-transparent">
+              Something Great.
+            </span>
+          </h2>
 
-                  <div className="mb-5 flex items-start justify-between">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-emerald-400/20 bg-emerald-400/[0.07] text-emerald-400 shadow-[0_0_24px_-6px_rgba(52,211,153,0.5)]">
-                      <Icon className="h-5 w-5" />
-                    </div>
+          <p className="mx-auto mt-5 max-w-[620px] text-[14px] leading-7 text-white/50 sm:text-[16px] sm:leading-8">
+            Have a project, idea, or opportunity in mind? Tell me
+            what you're working on, and let's explore how to bring
+            it to life.
+          </p>
+        </motion.div>
 
-                    {isLink && (
-                      <ArrowUpRight
-                        aria-hidden
-                        className="h-4 w-4 text-gray-600 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-emerald-300"
-                      />
-                    )}
-                  </div>
+        {/* CONTACT INFORMATION */}
+        <div className="mb-7 grid gap-4 md:grid-cols-3 lg:gap-5">
+          {contactCards.map((card, index) => {
+            const Icon = card.icon;
 
-                  <p className="mb-1.5 text-xs text-gray-500">{card.label}</p>
-
-                  {isLink ? (
-                    <a
-                      href={card.href}
-                      className="break-all rounded text-sm font-semibold text-gray-100 transition-colors hover:text-emerald-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 sm:text-base"
-                    >
-                      {card.value}
-                    </a>
-                  ) : (
-                    <p className="text-sm font-semibold text-gray-100 sm:text-base">
-                      {card.value}
-                    </p>
-                  )}
-
-                  <p className="mt-2.5 text-xs font-light text-gray-500">
-                    {card.description}
-                  </p>
-                </motion.div>
-              );
-            })}
-          </motion.div>
-
-          {/* ================= MAIN CONTENT ================= */}
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[0.85fr_1.15fr]">
-            {/* ================= LEFT SIDE ================= */}
-            <motion.div
-              variants={stagger}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, amount: 0.1 }}
-              className="space-y-5"
-            >
-              {/* What I can help with */}
+            return (
               <motion.div
-                variants={fadeUp}
-                className="rounded-3xl border border-white/[0.08] bg-white/[0.025] p-6 shadow-2xl shadow-black/40 backdrop-blur-sm sm:p-7"
-              >
-                <div className="mb-6 flex items-center gap-4">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-cyan-400/20 bg-cyan-400/[0.07] text-cyan-400">
-                    <Server className="h-5 w-5" />
-                  </div>
-
-                  <div>
-                    <h3 className="text-base font-semibold text-gray-100">
-                      What I can help with
-                    </h3>
-                    <p className="mt-0.5 text-xs text-gray-500">
-                      Areas of development and design
-                    </p>
-                  </div>
-                </div>
-
-                <ul className="space-y-2.5">
-                  {inquiryCategories.map((item) => (
-                    <li
-                      key={item}
-                      className="flex items-center gap-3 rounded-xl border border-white/[0.07] bg-white/[0.025] px-3.5 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]"
-                    >
-                      <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-400" />
-                      <span className="text-sm font-light text-gray-300">
-                        {item}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-
-              {/* Business hours */}
-              <motion.div
-                variants={fadeUp}
-                className="relative overflow-hidden rounded-3xl border border-emerald-400/15 bg-gradient-to-br from-emerald-400/[0.08] to-white/[0.015] p-6 shadow-2xl shadow-black/40 sm:p-7"
+                key={card.title}
+                {...reveal(0.08 + index * 0.08)}
+                className="group relative min-w-0 overflow-hidden rounded-[22px] border border-white/[0.1] bg-white/[0.035] p-6 backdrop-blur-xl transition-[border-color,background-color] duration-300 hover:border-[#ff5268]/30 hover:bg-white/[0.055]"
               >
                 <div
-                  aria-hidden
-                  className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent"
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-[#ff5268]/45 to-transparent"
                 />
 
-                <div className="flex items-start gap-4">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-emerald-400/20 bg-emerald-400/[0.07] text-emerald-400">
-                    <Clock className="h-5 w-5" />
+                <div className="mb-5 flex items-center justify-between">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-[#ff5268]/25 bg-[#ff5268]/[0.1] text-[#ff7583]">
+                    <Icon size={19} strokeWidth={1.8} />
                   </div>
 
-                  <div>
-                    <h3 className="text-base font-semibold text-gray-100">
-                      Business hours
-                    </h3>
-
-                    <p className="mt-1.5 text-sm font-light text-gray-400">
-                      Monday – Friday
-                    </p>
-
-                    <p className="mt-1 text-sm font-medium text-emerald-300">
-                      9:00 AM – 6:00 PM WAT
-                    </p>
-                  </div>
+                  {card.href && (
+                    <ArrowUpRight
+                      size={17}
+                      className="text-white/30 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#ff7583]"
+                    />
+                  )}
                 </div>
-              </motion.div>
 
-              {/* Socials */}
-              <motion.div
-                variants={fadeUp}
-                className="rounded-3xl border border-white/[0.08] bg-white/[0.025] p-6 shadow-2xl shadow-black/40 backdrop-blur-sm sm:p-7"
-              >
-                <p className="mb-4 text-sm font-medium text-gray-300">
-                  Connect with me
+                <p className="text-[10px] font-semibold tracking-[0.1em] text-[#ff8290]/75">
+                  {card.label}
                 </p>
 
-                <div className="grid grid-cols-4 gap-3">
-                  {socialLinks.map((social) => {
-                    const Icon = social.icon;
+                {card.href ? (
+                  <a
+                    href={card.href}
+                    className="mt-2 block break-all text-[14px] font-semibold text-white/90 transition-colors hover:text-[#ff9aa5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7583] sm:text-[15px]"
+                  >
+                    {card.value}
+                  </a>
+                ) : (
+                  <p className="mt-2 text-[14px] font-semibold text-white/90 sm:text-[15px]">
+                    {card.value}
+                  </p>
+                )}
 
-                    return (
-                      <a
-                        key={social.label}
-                        href={social.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={social.label}
-                        className="group flex h-12 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.03] text-gray-400 transition-all duration-300 hover:-translate-y-0.5 hover:border-emerald-400/30 hover:bg-emerald-400/[0.07] hover:text-emerald-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300"
-                      >
-                        <Icon size={17} />
-                      </a>
-                    );
-                  })}
-                </div>
+                <p className="mt-2 text-[12px] leading-6 text-white/40">
+                  {card.description}
+                </p>
               </motion.div>
-            </motion.div>
+            );
+          })}
+        </div>
 
-            {/* ================= FORM ================= */}
-            <motion.form
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, amount: 0.1 }}
-              onSubmit={handleSubmit}
-              className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.025] p-6 shadow-2xl shadow-black/40 backdrop-blur-sm sm:p-8"
+        {/* MAIN CONTACT AREA */}
+        <div className="grid items-start gap-6 lg:grid-cols-[0.85fr_1.15fr] lg:gap-7">
+          {/* LEFT COLUMN */}
+          <div className="space-y-5">
+            {/* SERVICES */}
+            <motion.div
+              {...reveal(0.1)}
+              className="relative overflow-hidden rounded-[24px] border border-white/[0.1] bg-white/[0.035] p-6 backdrop-blur-xl sm:p-7"
             >
-              {/* Top highlight */}
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent"
-              />
-
-              <div className="mb-8 flex items-center gap-4">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-emerald-400/20 bg-emerald-400/[0.07] text-emerald-400 shadow-[0_0_24px_-6px_rgba(52,211,153,0.5)]">
-                  <MessageCircle className="h-5 w-5" />
+              <div className="mb-6 flex items-center gap-3.5">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-[#ff5268]/20 bg-[#ff5268]/[0.09] text-[#ff7583]">
+                  <Sparkles size={19} />
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-100">
-                    Send a message
+                  <h3 className="text-[16px] font-semibold text-white">
+                    What I Can Help With
                   </h3>
 
-                  <p className="mt-0.5 text-sm font-light text-gray-500">
-                    Fill out the form and it will open WhatsApp with your
-                    message.
+                  <p className="mt-1 text-[12px] text-white/40">
+                    Development, design & engineering
                   </p>
                 </div>
               </div>
 
-              {/* Name */}
-              <div className="mb-5">
-                <label
-                  htmlFor="name"
-                  className="mb-2 block text-sm font-medium text-gray-300"
-                >
-                  Full name
-                </label>
-
-                <input
-                  id="name"
-                  type="text"
-                  name="name"
-                  autoComplete="name"
-                  placeholder="Enter your full name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className={fieldClass}
-                />
-              </div>
-
-              {/* Email */}
-              <div className="mb-5">
-                <label
-                  htmlFor="email"
-                  className="mb-2 block text-sm font-medium text-gray-300"
-                >
-                  Email address
-                </label>
-
-                <input
-                  id="email"
-                  type="email"
-                  name="email"
-                  autoComplete="email"
-                  placeholder="yourname@example.com"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className={fieldClass}
-                />
-              </div>
-
-              {/* Project type */}
-              <div className="mb-5">
-                <label
-                  htmlFor="projectType"
-                  className="mb-2 block text-sm font-medium text-gray-300"
-                >
-                  Project type
-                </label>
-
-                <select
-                  id="projectType"
-                  name="projectType"
-                  value={formData.projectType}
-                  onChange={handleChange}
-                  required
-                  className={`${fieldClass} [color-scheme:dark] ${
-                    formData.projectType ? "text-white" : "text-gray-500"
-                  }`}
-                >
-                  <option value="">Select your project type</option>
-                  <option value="Web Application">Web Application</option>
-                  <option value="Full-Stack Build">Full-Stack Build</option>
-                  <option value="Frontend / UI/UX">Frontend / UI/UX</option>
-                  <option value="API Integration">API Integration</option>
-                  <option value="Cloud & DevOps">Cloud & DevOps</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-
-              {/* Message */}
-              <div className="mb-7">
-                <label
-                  htmlFor="message"
-                  className="mb-2 block text-sm font-medium text-gray-300"
-                >
-                  Message
-                </label>
-
-                <textarea
-                  id="message"
-                  name="message"
-                  placeholder="Tell me about your project..."
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                  rows={6}
-                  className={`${fieldClass} resize-none`}
-                />
-              </div>
-
-              {/* Submit */}
-              <motion.button
-                type="submit"
-                whileTap={{ scale: 0.985 }}
-                className="group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-b from-emerald-400 to-emerald-500 px-5 py-3.5 text-sm font-semibold text-[#02110b] shadow-[0_8px_30px_-8px_rgba(16,185,129,0.55),inset_0_1px_0_rgba(255,255,255,0.35)] transition-shadow duration-300 hover:shadow-[0_12px_40px_-8px_rgba(16,185,129,0.7),inset_0_1px_0_rgba(255,255,255,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#03060a]"
-              >
-                {/* Sheen on hover */}
-                <span
-                  aria-hidden
-                  className="pointer-events-none absolute inset-y-0 -left-full w-1/2 -skew-x-12 bg-white/30 blur-md transition-all duration-700 group-hover:left-[130%]"
-                />
-
-                <MessageCircle className="relative h-4 w-4" />
-
-                <span className="relative">
-                  {submitted ? "Opening WhatsApp..." : "Send via WhatsApp"}
-                </span>
-
-                {!submitted && (
-                  <ArrowUpRight className="relative h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                )}
-              </motion.button>
-
-              {/* Status message (announced to screen readers) */}
-              <div role="status" aria-live="polite" className="min-h-[1.5rem]">
-                {submitted && (
-                  <motion.p
-                    initial={{ opacity: 0, y: 5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mt-3 text-center text-xs text-emerald-400"
+              <ul className="space-y-2.5">
+                {services.map((service) => (
+                  <li
+                    key={service}
+                    className="flex items-center gap-3 rounded-xl border border-white/[0.075] bg-white/[0.025] px-3.5 py-3"
                   >
-                    WhatsApp is opening with your message...
-                  </motion.p>
-                )}
+                    <CheckCircle2
+                      size={16}
+                      className="shrink-0 text-[#ff7583]"
+                    />
+
+                    <span className="text-[13px] text-white/65">
+                      {service}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+
+            {/* AVAILABILITY */}
+            <motion.div
+              {...reveal(0.15)}
+              className="relative overflow-hidden rounded-[24px] border border-[#ff5268]/20 bg-gradient-to-br from-[#ff5268]/[0.1] to-white/[0.025] p-6 backdrop-blur-xl sm:p-7"
+            >
+              <div className="flex items-start gap-4">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#ff5268]/25 bg-[#ff5268]/[0.1] text-[#ff7583]">
+                  <Clock3 size={19} />
+                </div>
+
+                <div>
+                  <h3 className="text-[16px] font-semibold text-white">
+                    Business Hours
+                  </h3>
+
+                  <p className="mt-2 text-[13px] text-white/50">
+                    Monday – Friday
+                  </p>
+
+                  <p className="mt-1 text-[14px] font-semibold text-[#ff9aa5]">
+                    9:00 AM – 6:00 PM WAT
+                  </p>
+
+                  <p className="mt-3 text-[12px] leading-6 text-white/40">
+                    Feel free to send an inquiry at any time.
+                  </p>
+                </div>
               </div>
-            </motion.form>
+            </motion.div>
+
+            {/* SOCIAL LINKS */}
+            <motion.div
+              {...reveal(0.2)}
+              className="rounded-[24px] border border-white/[0.1] bg-white/[0.035] p-6 backdrop-blur-xl sm:p-7"
+            >
+              <div className="mb-5 flex items-center justify-between gap-3">
+                <div>
+                  <h3 className="text-[15px] font-semibold text-white">
+                    Find Me Online
+                  </h3>
+
+                  <p className="mt-1 text-[12px] text-white/40">
+                    Connect and explore my work
+                  </p>
+                </div>
+
+                <ArrowUpRight size={17} className="text-[#ff7583]/60" />
+              </div>
+
+              <div className="grid grid-cols-4 gap-3">
+                {socialLinks.map((social) => {
+                  const Icon = social.icon;
+
+                  return (
+                    <a
+                      key={social.label}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={social.label}
+                      title={social.label}
+                      className="flex h-12 items-center justify-center rounded-xl border border-white/[0.1] bg-white/[0.045] text-white/55 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#ff5268]/35 hover:bg-[#ff5268]/[0.1] hover:text-[#ff9aa5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7583]"
+                    >
+                      <Icon size={19} />
+                    </a>
+                  );
+                })}
+              </div>
+            </motion.div>
           </div>
 
-          {/* ================= BOTTOM ================= */}
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            className="mt-16 text-center"
+          {/* CONTACT FORM */}
+          <motion.form
+            {...reveal(0.12)}
+            onSubmit={handleSubmit}
+            className="relative overflow-hidden rounded-[26px] border border-white/[0.12] bg-white/[0.04] p-6 shadow-[0_25px_70px_rgba(0,0,0,0.2)] backdrop-blur-xl sm:p-8 lg:p-9"
           >
-            <div className="mx-auto mb-6 h-px max-w-xs bg-gradient-to-r from-transparent via-white/[0.12] to-transparent" />
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-[#ff5268]/60 to-transparent"
+            />
 
-            <div className="inline-flex items-center gap-2 text-sm font-light text-gray-500">
-              <ShieldCheck className="h-4 w-4 text-emerald-500/70" />
-              <span>Professional communication and secure project discussions</span>
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -right-32 -top-32 h-72 w-72 rounded-full bg-[#b70b22]/[0.08] blur-[90px]"
+            />
+
+            {/* FORM HEADER */}
+            <div className="relative mb-8 flex items-start gap-4">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#ff5268]/25 bg-[#ff5268]/[0.1] text-[#ff7583]">
+                <MessageCircle size={21} />
+              </div>
+
+              <div>
+                <h3 className="text-[20px] font-bold tracking-[-0.03em] text-white sm:text-[23px]">
+                  Tell Me About Your Project
+                </h3>
+
+                <p className="mt-1.5 text-[12px] leading-6 text-white/45 sm:text-[13px]">
+                  Complete the form to prepare a WhatsApp message.
+                </p>
+              </div>
             </div>
-          </motion.div>
+
+            {/* NAME AND EMAIL */}
+            <div className="grid gap-5 sm:grid-cols-2">
+              <div>
+                <label
+                  htmlFor="contact-name"
+                  className="mb-2 block text-[12px] font-semibold text-white/75"
+                >
+                  Full Name <span className="text-[#ff7583]">*</span>
+                </label>
+
+                <input
+                  id="contact-name"
+                  name="name"
+                  type="text"
+                  autoComplete="name"
+                  placeholder="Your full name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  maxLength={100}
+                  required
+                  className={fieldClass}
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="contact-email"
+                  className="mb-2 block text-[12px] font-semibold text-white/75"
+                >
+                  Email Address <span className="text-[#ff7583]">*</span>
+                </label>
+
+                <input
+                  id="contact-email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  placeholder="you@example.com"
+                  value={formData.email}
+                  onChange={handleChange}
+                  maxLength={254}
+                  required
+                  className={fieldClass}
+                />
+              </div>
+            </div>
+
+            {/* PROJECT TYPE */}
+            <div className="mt-5">
+              <label
+                htmlFor="contact-project-type"
+                className="mb-2 block text-[12px] font-semibold text-white/75"
+              >
+                Project Type <span className="text-[#ff7583]">*</span>
+              </label>
+
+              <select
+                id="contact-project-type"
+                name="projectType"
+                value={formData.projectType}
+                onChange={handleChange}
+                required
+                className={`${fieldClass} [color-scheme:dark] ${
+                  formData.projectType ? "text-white" : "text-white/35"
+                }`}
+              >
+                <option value="">Select a service</option>
+
+                {projectTypes.map((type) => (
+                  <option key={type} value={type}>
+                    {type}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* MESSAGE */}
+            <div className="mt-5">
+              <div className="mb-2 flex items-center justify-between gap-3">
+                <label
+                  htmlFor="contact-message"
+                  className="text-[12px] font-semibold text-white/75"
+                >
+                  Project Details <span className="text-[#ff7583]">*</span>
+                </label>
+
+                <span className="text-[10px] tabular-nums text-white/30">
+                  {formData.message.length}/2000
+                </span>
+              </div>
+
+              <textarea
+                id="contact-message"
+                name="message"
+                rows={7}
+                placeholder="Tell me about your idea, project requirements, timeline, or what you'd like to build..."
+                value={formData.message}
+                onChange={handleChange}
+                maxLength={2000}
+                required
+                className={`${fieldClass} min-h-[180px] resize-y`}
+              />
+            </div>
+
+            {/* SUBMIT */}
+            <motion.button
+              type="submit"
+              whileTap={reduceMotion ? undefined : { scale: 0.985 }}
+              className="group relative mt-7 flex w-full items-center justify-center gap-2.5 overflow-hidden rounded-xl bg-[#f02d43] px-5 py-4 text-[13px] font-semibold text-white shadow-[0_10px_30px_rgba(220,18,48,0.18)] transition-[background-color,box-shadow] duration-300 hover:bg-[#ff4055] hover:shadow-[0_14px_40px_rgba(220,18,48,0.28)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7583] focus-visible:ring-offset-2 focus-visible:ring-offset-[#100609]"
+            >
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-y-0 -left-full w-1/2 -skew-x-12 bg-white/20 blur-md transition-all duration-700 group-hover:left-[130%]"
+              />
+
+              <Send size={17} className="relative" />
+
+              <span className="relative">Continue to WhatsApp</span>
+
+              <ArrowUpRight
+                size={16}
+                className="relative transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              />
+            </motion.button>
+
+            {/* FORM STATUS */}
+            <div role="status" aria-live="polite">
+              {status && (
+                <p className="mt-4 text-center text-[12px] leading-6 text-[#ff9aa5]">
+                  {status}
+                </p>
+              )}
+            </div>
+
+            {/* FORM FOOTER */}
+            <div className="mt-6 flex items-start gap-2.5 border-t border-white/[0.09] pt-5">
+              <ShieldCheck
+                size={16}
+                className="mt-0.5 shrink-0 text-[#ff7583]/80"
+              />
+
+              <p className="text-[11px] leading-6 text-white/40">
+                Your details are used to prepare the message. Nothing is
+                submitted until you confirm and send it in WhatsApp.
+              </p>
+            </div>
+          </motion.form>
         </div>
-      </section>
-    </MotionConfig>
+
+        {/* BOTTOM CTA */}
+        <motion.div
+          {...reveal(0.1)}
+          className="mt-14 flex flex-col items-center justify-between gap-5 rounded-[22px] border border-white/[0.1] bg-white/[0.035] px-6 py-6 text-center backdrop-blur-xl sm:flex-row sm:px-8 sm:text-left"
+        >
+          <div>
+            <h3 className="text-[16px] font-semibold text-white">
+              Prefer a quick conversation?
+            </h3>
+
+            <p className="mt-1.5 text-[12px] leading-6 text-white/45">
+              Reach out directly on WhatsApp to discuss your project.
+            </p>
+          </div>
+
+          <a
+            href="https://wa.me/2349065644691"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex shrink-0 items-center gap-2 rounded-xl border border-[#ff5268]/30 bg-[#ff5268]/[0.1] px-5 py-3 text-[12px] font-semibold text-[#ff9aa5] transition-all duration-300 hover:border-[#ff5268]/50 hover:bg-[#ff5268]/[0.17] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff7583]"
+          >
+            <MessageCircle size={16} />
+            Chat on WhatsApp
+            <ArrowRight
+              size={15}
+              className="transition-transform duration-300 group-hover:translate-x-1"
+            />
+          </a>
+        </motion.div>
+      </div>
+    </section>
   );
 }
