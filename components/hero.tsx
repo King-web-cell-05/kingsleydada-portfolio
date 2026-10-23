@@ -1,622 +1,441 @@
-/* eslint-disable react/no-unescaped-entities */
 
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  motion,
-  useMotionValue,
-  useReducedMotion,
-  useSpring,
-  useTransform,
-  type Variants,
-} from "framer-motion";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import { Cinzel, Inter } from "next/font/google";
+import { motion, useReducedMotion } from "framer-motion";
+import { Inter } from "next/font/google";
+import {
+  ArrowUpRight,
+  ArrowDownRight,
+  BriefcaseBusiness,
+  Code2,
+} from "lucide-react";
 import { FaGithub, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-import { ArrowUpRight, BriefcaseBusiness } from "lucide-react";
-
-const cinzel = Cinzel({
-  subsets: ["latin"],
-  weight: ["700"],
-});
 
 const inter = Inter({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
-const roles = ["Fullstack Developer", "UI/UX Designer", "Graphic Designer"];
+const roles = [
+  "Full-Stack Developer",
+  "UI/UX Designer",
+  "Graphic Designer",
+];
 
 const socials = [
   {
-    label: "GitHub",
+    name: "GitHub",
     href: "https://github.com/King-web-cell-05",
     icon: FaGithub,
-    hover:
-      "hover:border-emerald-400/40 hover:bg-emerald-400/[0.08] hover:text-emerald-300",
   },
   {
-    label: "LinkedIn",
+    name: "LinkedIn",
     href: "https://www.linkedin.com/in/dada-kingsley-a0858637a",
     icon: FaLinkedin,
-    hover:
-      "hover:border-sky-400/40 hover:bg-sky-400/[0.08] hover:text-sky-300",
   },
   {
-    label: "X",
+    name: "X",
     href: "https://x.com/codekingz05",
     icon: FaXTwitter,
-    hover: "hover:border-white/30 hover:bg-white/[0.07] hover:text-white",
   },
   {
-    label: "WhatsApp",
+    name: "WhatsApp",
     href: "https://wa.me/2349065644691",
     icon: FaWhatsapp,
-    hover:
-      "hover:border-green-400/40 hover:bg-green-400/[0.08] hover:text-green-300",
   },
 ];
 
 const stats = [
-  { value: "3+", label: "Years experience" },
-  { value: "10+", label: "Projects shipped" },
-  { value: "3", label: "Creative fields" },
+  { value: "3+", label: "Years Experience" },
+  { value: "10+", label: "Projects Built" },
+  { value: "03", label: "Creative Fields" },
 ];
 
-const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
-
-/* One orchestrated page-load sequence for the left column */
-const container: Variants = {
-  hidden: {},
-  show: {
-    transition: { staggerChildren: 0.09, delayChildren: 0.1 },
-  },
-};
-
-const item: Variants = {
-  hidden: { opacity: 0, y: 18 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.75, ease: EASE },
-  },
-};
+const ease = [0.22, 1, 0.36, 1] as const;
 
 export default function HeroSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
   const reduceMotion = useReducedMotion();
 
+  const [roleIndex, setRoleIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
-  const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  /* =========================================================
-     TYPEWRITER EFFECT
-  ========================================================= */
-
+  // Smooth typewriter animation
   useEffect(() => {
-    // With reduced motion, just show the first role statically.
-    if (reduceMotion) {
-      setDisplayText(roles[0]);
-      return;
-    }
-
-    const currentRole = roles[currentRoleIndex];
-    let delay = isDeleting ? 45 : 85;
-    let next: () => void;
-
-    if (!isDeleting && displayText.length < currentRole.length) {
-      next = () => setDisplayText(currentRole.slice(0, displayText.length + 1));
-    } else if (!isDeleting) {
-      delay = 1800;
-      next = () => setIsDeleting(true);
-    } else if (displayText.length > 0) {
-      next = () => setDisplayText(currentRole.slice(0, displayText.length - 1));
-    } else {
-      delay = 350;
-      next = () => {
-        setIsDeleting(false);
-        setCurrentRoleIndex((prev) => (prev + 1) % roles.length);
-      };
-    }
-
-    const timer = setTimeout(next, delay);
-    return () => clearTimeout(timer);
-  }, [displayText, isDeleting, currentRoleIndex, reduceMotion]);
-
-  /* =========================================================
-     BACKGROUND: CONSTELLATION PARTICLES
-  ========================================================= */
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const section = sectionRef.current;
-    if (!canvas || !section) return;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let width = 0;
-    let height = 0;
-    let animationFrameId = 0;
-    let isVisible = true;
-
-    type Particle = {
-      x: number;
-      y: number;
-      vx: number;
-      vy: number;
-      size: number;
-      opacity: number;
-    };
-
-    let particles: Particle[] = [];
-    const LINK_DISTANCE = 130;
-
-    const buildParticles = () => {
-      const count = Math.min(70, Math.max(28, Math.floor(width / 22)));
-      particles = Array.from({ length: count }, () => ({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.16,
-        vy: (Math.random() - 0.5) * 0.16,
-        size: Math.random() * 1.2 + 0.4,
-        opacity: Math.random() * 0.35 + 0.15,
-      }));
-    };
-
-    const resizeCanvas = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      width = section.offsetWidth;
-      height = section.offsetHeight;
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      buildParticles();
-      if (reduceMotion) draw();
-    };
-
-    const draw = () => {
-      ctx.clearRect(0, 0, width, height);
-
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
-
-        // Lines between nearby particles
-        for (let j = i + 1; j < particles.length; j++) {
-          const q = particles[j];
-          const dx = p.x - q.x;
-          const dy = p.y - q.y;
-          const dist = Math.hypot(dx, dy);
-
-          if (dist < LINK_DISTANCE) {
-            ctx.strokeStyle = `rgba(52, 211, 153, ${
-              (1 - dist / LINK_DISTANCE) * 0.12
-            })`;
-            ctx.lineWidth = 0.6;
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(q.x, q.y);
-            ctx.stroke();
-          }
-        }
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(110, 231, 183, ${p.opacity})`;
-        ctx.fill();
-      }
-    };
-
-    const step = () => {
-      if (isVisible) {
-        for (const p of particles) {
-          p.x += p.vx;
-          p.y += p.vy;
-          if (p.x < 0 || p.x > width) p.vx *= -1;
-          if (p.y < 0 || p.y > height) p.vy *= -1;
-        }
-        draw();
-      }
-      animationFrameId = requestAnimationFrame(step);
-    };
-
-    resizeCanvas();
-
-    if (!reduceMotion) {
-      animationFrameId = requestAnimationFrame(step);
-    }
-
-    // Pause the animation when the hero is scrolled out of view
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        isVisible = entry.isIntersecting;
-      },
-      { threshold: 0 }
-    );
-    observer.observe(section);
-
-    window.addEventListener("resize", resizeCanvas);
-
-    return () => {
-      window.removeEventListener("resize", resizeCanvas);
-      observer.disconnect();
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, [reduceMotion]);
-
-  /* =========================================================
-     IMAGE TILT (pointer-driven)
-  ========================================================= */
-
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-
-  const rotateX = useSpring(useTransform(my, [-0.5, 0.5], [6, -6]), {
-    stiffness: 140,
-    damping: 18,
-  });
-  const rotateY = useSpring(useTransform(mx, [-0.5, 0.5], [-8, 8]), {
-    stiffness: 140,
-    damping: 18,
-  });
-
-  const handleTilt = (e: React.MouseEvent<HTMLDivElement>) => {
     if (reduceMotion) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    mx.set((e.clientX - rect.left) / rect.width - 0.5);
-    my.set((e.clientY - rect.top) / rect.height - 0.5);
-  };
 
-  const resetTilt = () => {
-    mx.set(0);
-    my.set(0);
-  };
+    const currentRole = roles[roleIndex];
 
-  /* =========================================================
-     SCROLL
-  ========================================================= */
+    let delay = isDeleting ? 45 : 85;
 
-  const scrollToId = useCallback(
-    (id: string) => {
-      document.getElementById(id)?.scrollIntoView({
-        behavior: reduceMotion ? "auto" : "smooth",
-      });
+    if (!isDeleting && displayText === currentRole) {
+      delay = 2200;
+    } else if (isDeleting && displayText === "") {
+      delay = 350;
+    }
+
+    const timeout = window.setTimeout(() => {
+      if (!isDeleting && displayText === currentRole) {
+        setIsDeleting(true);
+      } else if (isDeleting && displayText === "") {
+        setIsDeleting(false);
+        setRoleIndex((prev) => (prev + 1) % roles.length);
+      } else {
+        setDisplayText(
+          currentRole.slice(
+            0,
+            displayText.length + (isDeleting ? -1 : 1)
+          )
+        );
+      }
+    }, delay);
+
+    return () => window.clearTimeout(timeout);
+  }, [roleIndex, displayText, isDeleting, reduceMotion]);
+
+  const reveal = (delay = 0) => ({
+    initial: reduceMotion
+      ? false
+      : { opacity: 0, y: 24 },
+    animate: { opacity: 1, y: 0 },
+    transition: {
+      duration: 0.8,
+      delay,
+      ease,
     },
-    [reduceMotion]
-  );
+  });
 
-  /* =========================================================
-     COMPONENT
-  ========================================================= */
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({
+      behavior: reduceMotion ? "auto" : "smooth",
+    });
+  };
 
   return (
     <section
       id="hero"
-      ref={sectionRef}
-      className={`relative min-h-screen overflow-hidden bg-[#03060a] text-white ${inter.className}`}
+      className={`relative isolate min-h-screen overflow-hidden bg-[#090406] text-white ${inter.className}`}
     >
-      {/* =====================================================
-          BACKGROUND
-      ===================================================== */}
+      {/* BACKGROUND */}
 
-      <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <div className="absolute left-[-15%] top-[10%] h-[320px] w-[320px] rounded-full bg-emerald-500/[0.07] blur-[130px] sm:h-[440px] sm:w-[440px]" />
-        <div className="absolute right-[-12%] top-[18%] h-[360px] w-[360px] rounded-full bg-sky-500/[0.045] blur-[140px] sm:h-[480px] sm:w-[480px]" />
-        <div className="absolute bottom-[-160px] left-[30%] h-[340px] w-[340px] rounded-full bg-emerald-500/[0.035] blur-[130px]" />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
+      >
+        <div className="absolute inset-0 bg-[linear-gradient(135deg,#080406_0%,#170407_40%,#32050c_75%,#120407_100%)]" />
+
+        <div className="absolute -right-[20%] -top-[40%] h-[750px] w-[900px] rounded-full bg-[#a50920]/35 blur-[140px]" />
+
+        <div className="absolute -left-[25%] top-[15%] h-[600px] w-[600px] rounded-full bg-[#770819]/25 blur-[130px]" />
+
+        <div className="absolute -bottom-[480px] right-[-230px] h-[850px] w-[850px] rounded-full bg-[radial-gradient(circle_at_40%_30%,#f32c3e_0%,#b70b22_32%,#690817_65%,#25040a_100%)] opacity-80 shadow-[0_0_160px_rgba(205,14,38,0.22)] sm:-bottom-[550px] sm:right-[-150px] lg:-bottom-[650px] lg:right-[-180px] lg:h-[1050px] lg:w-[1050px]" />
+
+        <div className="absolute bottom-[-20%] right-[5%] h-[500px] w-[500px] rounded-full bg-[#ff243a]/20 blur-[130px]" />
+
+        <div className="absolute -left-[350px] -top-[520px] h-[950px] w-[1050px] rounded-full bg-black/65 blur-[5px]" />
+
+        {/* Subtle texture */}
+        <div
+          className="absolute inset-0 opacity-[0.035] mix-blend-screen"
+          style={{
+            backgroundImage:
+              "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='.6'/%3E%3C/svg%3E\")",
+          }}
+        />
+
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(0,0,0,0.45)_100%)]" />
       </div>
 
-      {/* Fading grid */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.035]"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(255,255,255,0.9) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.9) 1px, transparent 1px)
-          `,
-          backgroundSize: "64px 64px",
-          maskImage:
-            "radial-gradient(ellipse 70% 60% at 50% 45%, black 30%, transparent 100%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse 70% 60% at 50% 45%, black 30%, transparent 100%)",
-        }}
-      />
+      {/* MAIN CONTENT */}
 
-      {/* Particles */}
-      <canvas
-        ref={canvasRef}
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-50"
-      />
+      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1320px] items-center px-5 pb-20 pt-28 sm:px-8 lg:px-12 lg:pb-24 lg:pt-32">
+        <div className="grid w-full items-center gap-14 lg:grid-cols-[1.08fr_0.92fr] lg:gap-12 xl:gap-20">
 
-      {/* Film grain for depth */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.045] mix-blend-overlay"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
-        }}
-      />
+          {/* LEFT CONTENT */}
 
-      {/* Vignette */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_55%,rgba(0,0,0,0.55)_100%)]"
-      />
+          <div className="relative z-20 min-w-0 max-w-[650px]">
 
-      {/* =====================================================
-          CONTENT
-      ===================================================== */}
-
-      <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center px-5 pb-16 pt-28 sm:px-8 lg:px-10">
-        <div className="grid w-full items-center gap-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 xl:gap-24">
-          {/* =================================================
-              LEFT SIDE
-          ================================================= */}
-
-          <motion.div
-            variants={container}
-            initial="hidden"
-            animate="show"
-            className="max-w-2xl"
-          >
-            {/* Availability badge */}
+            {/* Availability */}
             <motion.div
-              variants={item}
-              className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-white/[0.09] bg-white/[0.03] py-1.5 pl-3 pr-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-md"
+              {...reveal(0.05)}
+              className="mb-8 inline-flex items-center gap-3 rounded-full border border-white/[0.13] bg-white/[0.055] px-4 py-2.5 backdrop-blur-xl"
             >
               <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-50 motion-reduce:animate-none" />
-                <span className="relative h-2 w-2 rounded-full bg-emerald-400" />
+                <span className="absolute inset-0 rounded-full bg-[#ff4d60]/30" />
+                <span className="relative h-2 w-2 rounded-full bg-[#ff5266] shadow-[0_0_12px_rgba(255,70,94,0.6)]" />
               </span>
 
-              <span className="text-xs font-medium text-gray-300">
-                Available for new opportunities
+              <span className="text-[11px] font-medium tracking-[0.08em] text-white/75 sm:text-xs">
+                AVAILABLE FOR OPPORTUNITIES
               </span>
             </motion.div>
 
             {/* Introduction */}
             <motion.p
-              variants={item}
-              className="mb-4 text-sm font-light tracking-wide text-gray-500 sm:text-base"
+              {...reveal(0.12)}
+              className="mb-4 text-sm font-medium tracking-[0.14em] text-[#ff7583] sm:text-[15px]"
             >
-              Software developer & creative
+              HELLO, I'M
             </motion.p>
 
-            {/* Main heading */}
+            {/* Name */}
             <motion.h1
-              variants={item}
-              className={`${cinzel.className} leading-[1.05]`}
+              {...reveal(0.18)}
+              className="max-w-[700px] text-[clamp(2.65rem,5.4vw,5.1rem)] font-extrabold leading-[1.07] tracking-[-0.065em]"
             >
-              <span className="block text-[1.6rem] font-bold tracking-[0.01em] text-gray-500 sm:text-[2rem]">
-                Hello, I'm
+              <span className="block text-white">
+                Dada Kingsley
               </span>
 
-              <span className="mt-2 block bg-gradient-to-br from-white via-gray-100 to-emerald-400 bg-clip-text text-[3rem] font-bold tracking-[0.005em] text-transparent sm:text-[4.3rem] lg:text-[4.8rem]">
-                Dada Kingsley
-                <br />
-                Oluwasanmi
+              <span className="block bg-gradient-to-r from-white via-[#ffe3e6] to-[#ff6173] bg-clip-text pb-2 text-transparent">
+                Oluwasanmi.
               </span>
             </motion.h1>
 
-            {/* Role */}
-            <motion.div variants={item} className="mt-7 flex min-h-[34px] items-center">
+            {/* Professional roles - Typewriter */}
+            <motion.div
+              {...reveal(0.26)}
+              className="mt-5 flex min-h-[36px] min-w-0 items-center gap-3"
+            >
               <span
-                aria-hidden
-                className="mr-4 h-px w-10 bg-gradient-to-r from-transparent to-emerald-400/80 sm:w-14"
+                aria-hidden="true"
+                className="h-6 w-[3px] shrink-0 rounded-full bg-[#ff5268]"
               />
 
-              <p className="text-base font-medium text-emerald-300 sm:text-xl">
+              <p className="flex min-w-0 items-center text-[15px] font-semibold tracking-[-0.015em] text-white/90 sm:text-[19px]">
                 <span className="sr-only">
-                  Fullstack Developer, UI/UX Designer and Graphic Designer
+                  Full-Stack Developer, UI/UX Designer and Graphic Designer
                 </span>
 
-                <span aria-hidden>
-                  {displayText}
-                  <span className="ml-1 inline-block h-5 w-[2px] translate-y-1 animate-pulse bg-emerald-400 motion-reduce:animate-none" />
+                <span aria-hidden="true">
+                  {reduceMotion ? roles[0] : displayText}
                 </span>
+
+                {!reduceMotion && (
+                  <motion.span
+                    aria-hidden="true"
+                    animate={{ opacity: [1, 1, 0, 0] }}
+                    transition={{
+                      duration: 1,
+                      repeat: Infinity,
+                      ease: "linear",
+                      times: [0, 0.45, 0.5, 1],
+                    }}
+                    className="ml-[5px] inline-block h-[21px] w-[2px] shrink-0 rounded-full bg-[#ff5268] shadow-[0_0_9px_rgba(255,82,104,0.45)]"
+                  />
+                )}
               </p>
             </motion.div>
 
             {/* Description */}
             <motion.p
-              variants={item}
-              className="mt-6 max-w-lg text-[15px] font-light leading-8 text-gray-400 sm:text-[17px]"
+              {...reveal(0.34)}
+              className="mt-7 max-w-[510px] text-[14px] leading-[1.9] text-[#c0b2b6] sm:text-[16px]"
             >
-              I design and build modern digital products with a focus on clean
-              code, thoughtful interfaces, and reliable user experiences.
+              I design and develop modern digital experiences
+              that combine clean interfaces, thoughtful design,
+              and reliable engineering. From concept to
+              production, I build products that look exceptional
+              and work seamlessly.
             </motion.p>
 
-            {/* Buttons */}
+            {/* CTA Buttons */}
             <motion.div
-              variants={item}
-              className="mt-9 flex w-full flex-col gap-3 sm:w-auto sm:flex-row"
+              {...reveal(0.42)}
+              className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center"
             >
-              <motion.button
-                onClick={() => scrollToId("contact")}
-                whileHover={reduceMotion ? undefined : { y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-b from-emerald-400 to-emerald-500 px-7 py-3.5 text-sm font-semibold text-[#02110b] shadow-[0_8px_30px_-8px_rgba(16,185,129,0.55),inset_0_1px_0_rgba(255,255,255,0.35)] transition-shadow duration-300 hover:shadow-[0_12px_40px_-8px_rgba(16,185,129,0.7),inset_0_1px_0_rgba(255,255,255,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#03060a] sm:w-auto"
+              <button
+                type="button"
+                onClick={() => scrollTo("contact")}
+                className="group inline-flex min-h-[51px] items-center justify-center gap-3 rounded-xl bg-[#f02d43] px-7 py-3.5 text-[13px] font-semibold text-white shadow-[0_12px_35px_rgba(220,18,48,0.25)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#ff4055] hover:shadow-[0_16px_40px_rgba(220,18,48,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff8794]"
               >
-                {/* Sheen on hover */}
-                <span
-                  aria-hidden
-                  className="pointer-events-none absolute inset-y-0 -left-full w-1/2 -skew-x-12 bg-white/30 blur-md transition-all duration-700 group-hover:left-[130%]"
-                />
-
-                <span className="relative">Let's work together</span>
+                Let's Work Together
 
                 <ArrowUpRight
                   size={17}
-                  className="relative transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                  className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
                 />
-              </motion.button>
+              </button>
 
-              <motion.button
-                onClick={() => scrollToId("projects")}
-                whileHover={reduceMotion ? undefined : { y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                className="group inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/[0.1] bg-white/[0.03] px-7 py-3.5 text-sm font-medium text-gray-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-md transition-all duration-300 hover:border-emerald-400/30 hover:bg-white/[0.06] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#03060a] sm:w-auto"
+              <button
+                type="button"
+                onClick={() => scrollTo("projects")}
+                className="group inline-flex min-h-[51px] items-center justify-center gap-3 rounded-xl border border-white/[0.17] bg-white/[0.055] px-7 py-3.5 text-[13px] font-semibold text-white/90 backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-white/35 hover:bg-white/[0.1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff8794]"
               >
-                View projects
+                View My Projects
+
                 <BriefcaseBusiness
                   size={17}
-                  className="transition-transform duration-300 group-hover:translate-x-0.5"
+                  className="text-white/65 transition-colors group-hover:text-white"
                 />
-              </motion.button>
+              </button>
             </motion.div>
 
-            {/* Socials */}
-            <motion.div variants={item} className="mt-9 flex items-center gap-3">
-              <span className="mr-1 text-xs text-gray-600">Find me on</span>
+            {/* Social Links */}
+            <motion.div
+              {...reveal(0.5)}
+              className="mt-9 flex flex-wrap items-center gap-4"
+            >
+              <span className="text-xs font-medium text-white/40">
+                Connect with me
+              </span>
 
-              {socials.map(({ label, href, icon: Icon, hover }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className={`flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.03] text-gray-400 transition-all duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 ${hover}`}
-                >
-                  <Icon size={16} />
-                </a>
-              ))}
+              <div className="h-px w-7 bg-white/20" />
+
+              <div className="flex items-center gap-2">
+                {socials.map(({ name, href, icon: Icon }) => (
+                  <a
+                    key={name}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={name}
+                    className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.12] bg-white/[0.045] text-white/60 backdrop-blur-lg transition-all duration-300 hover:-translate-y-0.5 hover:border-[#ff6475]/45 hover:bg-[#ff4055]/15 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff8794]"
+                  >
+                    <Icon size={16} />
+                  </a>
+                ))}
+              </div>
             </motion.div>
 
             {/* Stats */}
             <motion.div
-              variants={item}
-              className="mt-10 flex max-w-md border-t border-white/[0.08] pt-6"
+              {...reveal(0.58)}
+              className="mt-11 grid max-w-[510px] grid-cols-3 border-t border-white/[0.12] pt-7"
             >
-              {stats.map((stat, i) => (
+              {stats.map((stat, index) => (
                 <div
                   key={stat.label}
-                  className={
-                    i === 0
-                      ? "pr-6 sm:pr-8"
-                      : i === stats.length - 1
-                      ? "border-l border-white/[0.08] pl-6 sm:pl-8"
-                      : "border-l border-white/[0.08] px-6 sm:px-8"
-                  }
+                  className={`min-w-0 ${
+                    index === 0
+                      ? "pr-3"
+                      : "border-l border-white/[0.12] pl-4 sm:pl-7"
+                  }`}
                 >
-                  <p className="text-2xl font-semibold tabular-nums text-white">
+                  <p className="text-[23px] font-bold tracking-[-0.045em] text-white sm:text-[29px]">
                     {stat.value}
                   </p>
-                  <p className="mt-1 text-xs text-gray-500">{stat.label}</p>
+
+                  <p className="mt-1 text-[10px] leading-5 text-white/45 sm:text-xs">
+                    {stat.label}
+                  </p>
                 </div>
               ))}
             </motion.div>
-          </motion.div>
+          </div>
 
-          {/* =================================================
-              RIGHT IMAGE SIDE
-          ================================================= */}
+          {/* RIGHT IMAGE */}
 
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, delay: 0.3, ease: EASE }}
-            className="relative mx-auto w-full max-w-[370px] sm:max-w-[410px] lg:-translate-y-6"
+            initial={
+              reduceMotion
+                ? false
+                : { opacity: 0, x: 35, scale: 0.97 }
+            }
+            animate={{
+              opacity: 1,
+              x: 0,
+              scale: 1,
+            }}
+            transition={{
+              duration: 1,
+              delay: 0.25,
+              ease,
+            }}
+            className="relative mx-auto w-full max-w-[400px] lg:max-w-[440px]"
           >
             {/* Ambient glow */}
-            <motion.div
-              aria-hidden
-              className="absolute -inset-10 rounded-full bg-emerald-500/[0.09] blur-[90px]"
-              animate={
-                reduceMotion
-                  ? undefined
-                  : { scale: [1, 1.08, 1], opacity: [0.5, 0.8, 0.5] }
-              }
-              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -inset-12 rounded-full bg-[#df1634]/20 blur-[90px]"
             />
 
-            {/* Image frame with tilt */}
-            <motion.div
-              onMouseMove={handleTilt}
-              onMouseLeave={resetTilt}
-              style={
-                reduceMotion
-                  ? undefined
-                  : { rotateX, rotateY, transformPerspective: 1100 }
-              }
-              className="relative rounded-[28px] bg-gradient-to-br from-emerald-300/40 via-white/[0.08] to-white/[0.02] p-[1px] shadow-2xl shadow-black/70"
-            >
-              <div className="rounded-[27px] bg-[#070b11]/90 p-2.5 backdrop-blur-sm">
-                <div className="group relative aspect-[4/5] overflow-hidden rounded-[20px] bg-[#070a10]">
-                  <Image
-                    src="/my-portfolio-pic.jpg"
-                    alt="Dada Kingsley Oluwasanmi"
-                    fill
-                    priority
-                    sizes="(max-width: 640px) 85vw, (max-width: 1024px) 45vw, 410px"
-                    className="object-cover grayscale-[30%] transition-all duration-700 group-hover:scale-[1.04] group-hover:grayscale-0"
-                  />
+            {/* Glass image frame */}
+            <div className="relative rounded-[30px] border border-white/[0.2] bg-gradient-to-br from-white/[0.19] via-white/[0.045] to-[#a70c22]/[0.16] p-[7px] shadow-[0_30px_100px_rgba(0,0,0,0.5)] backdrop-blur-2xl">
+              <div className="relative aspect-[4/4.65] overflow-hidden rounded-[23px] bg-[#16070b]">
 
-                  {/* Depth overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#03060a]/70 via-transparent to-black/10" />
+                <Image
+                  src="/my-portfolio-pic.jpg"
+                  alt="Dada Kingsley Oluwasanmi"
+                  fill
+                  priority
+                  sizes="(max-width: 640px) 90vw, (max-width: 1024px) 400px, 440px"
+                  className="object-cover object-center transition-transform duration-700 hover:scale-[1.035]"
+                />
 
-                  {/* Inner edge */}
-                  <div className="pointer-events-none absolute inset-0 rounded-[20px] ring-1 ring-inset ring-white/[0.07]" />
+                {/* Image overlays */}
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#150307]/85 via-transparent to-[#130307]/10" />
+
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-[#b50d27]/20 mix-blend-screen" />
+
+                {/* Bottom image label */}
+                <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-7">
+                  <div className="flex items-end justify-between gap-3">
+                    <div>
+                      <p className="mb-1.5 text-[10px] font-medium uppercase tracking-[0.2em] text-white/55">
+                        Developer & Designer
+                      </p>
+
+                      <p className="text-[18px] font-semibold tracking-[-0.035em] text-white sm:text-[20px]">
+                        Building with purpose.
+                      </p>
+                    </div>
+
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/20 bg-white/10 backdrop-blur-xl">
+                      <Code2
+                        size={19}
+                        className="text-white/90"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
 
-            {/* Open to work card */}
-            <motion.div
-              animate={reduceMotion ? undefined : { y: [0, -6, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -right-4 top-8 hidden items-center gap-2.5 rounded-2xl border border-white/[0.1] bg-[#0a0f18]/80 px-4 py-3 shadow-xl shadow-black/40 backdrop-blur-xl sm:flex"
-            >
-              <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.7)]" />
-              <span className="text-xs font-medium text-gray-200">
-                Open to work
+            {/* Availability glass card */}
+            <div className="absolute -right-2 top-8 hidden items-center gap-3 rounded-2xl border border-white/20 bg-[#250a11]/75 px-4 py-3 shadow-[0_12px_35px_rgba(0,0,0,0.3)] backdrop-blur-2xl sm:flex xl:-right-6">
+              <span className="h-2 w-2 rounded-full bg-[#ff5268] shadow-[0_0_12px_rgba(255,82,104,0.65)]" />
+
+              <span className="text-xs font-medium text-white/85">
+                Open to opportunities
               </span>
-            </motion.div>
+            </div>
 
-            {/* Developer card */}
-            <motion.div
-              animate={reduceMotion ? undefined : { y: [0, 6, 0] }}
-              transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -bottom-6 -left-5 hidden rounded-2xl border border-white/[0.1] bg-[#0a0f18]/80 px-5 py-3.5 shadow-xl shadow-black/40 backdrop-blur-xl sm:block"
-            >
-              <p className="text-[11px] text-gray-500">Currently building</p>
-              <p className="mt-1 text-sm font-medium text-emerald-300">
-                Fullstack applications
-              </p>
-            </motion.div>
+            {/* Development glass card */}
+            <div className="absolute -bottom-5 -left-3 hidden items-center gap-3 rounded-2xl border border-white/15 bg-[#22080e]/85 px-5 py-3.5 shadow-[0_15px_40px_rgba(0,0,0,0.35)] backdrop-blur-2xl sm:flex xl:-left-7">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#ef3048]/15 text-[#ff7180]">
+                <Code2 size={18} />
+              </div>
+
+              <div>
+                <p className="text-[10px] text-white/45">
+                  Focused on
+                </p>
+
+                <p className="mt-0.5 text-xs font-semibold text-white/90">
+                  Design & Development
+                </p>
+              </div>
+            </div>
           </motion.div>
         </div>
       </div>
 
-      {/* =====================================================
-          BOTTOM SCROLL INDICATOR
-      ===================================================== */}
-
+      {/* SCROLL INDICATOR */}
       <motion.button
         type="button"
-        onClick={() => scrollToId("projects")}
-        initial={{ opacity: 0 }}
+        onClick={() => scrollTo("projects")}
+        initial={reduceMotion ? false : { opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.4, duration: 0.8 }}
+        transition={{ duration: 0.8, delay: 1 }}
+        className="absolute bottom-7 left-1/2 hidden -translate-x-1/2 items-center gap-2 text-[11px] font-medium uppercase tracking-[0.16em] text-white/35 transition-colors hover:text-white/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff8794] lg:flex"
         aria-label="Scroll to projects"
-        className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-xs text-gray-600 transition-colors hover:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 md:flex"
       >
-        Scroll
-        <span className="relative h-9 w-[1px] overflow-hidden bg-white/10">
-          <motion.span
-            className="absolute left-0 top-0 h-3 w-full bg-emerald-400"
-            animate={reduceMotion ? undefined : { y: [-12, 36] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-          />
-        </span>
+        Scroll to explore
+        <ArrowDownRight size={15} />
       </motion.button>
     </section>
   );
