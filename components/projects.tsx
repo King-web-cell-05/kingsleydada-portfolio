@@ -44,6 +44,29 @@ type Project = {
 const projects: Project[] = [
   {
     id: 1,
+    title: "FootballSim — Football Competition Platform",
+    description:
+      "A full-stack football competition management and simulation platform featuring user authentication, competition and team management, fixture generation, match simulation, live-calculated standings, and an administrative dashboard.",
+    technologies: [
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "C#",
+      "ASP.NET Core 10",
+      "Entity Framework Core",
+      "PostgreSQL",
+      "Supabase",
+    ],
+    // Replace with /footballsim.png after adding a dedicated screenshot to /public.
+    image: "/football-sim.png",
+    // Currently points to the confirmed backend repository; replace with the frontend repo URL if preferred.
+    link: "https://github.com/King-web-cell-05/ChampionsLeagueSimulatorApi",
+    live: "https://king-footballsimulator.vercel.app/",
+    category: "Full Stack",
+    featured: true,
+  },
+  {
+    id: 2,
     title: "Globalease - HR",
     description:
       "A professional HR consulting and academy platform showcasing workforce solutions, HR services, learning resources, and company expertise.",
@@ -54,7 +77,7 @@ const projects: Project[] = [
     category: "Frontend",
   },
   {
-    id: 2,
+    id: 3,
     title: "Summy Solutions E-commerce Platform",
     description:
       "A full-stack e-commerce platform featuring product discovery, cart management, checkout, authentication, user accounts, and an administrative dashboard.",
@@ -74,7 +97,7 @@ const projects: Project[] = [
     featured: true,
   },
   {
-    id: 3,
+    id: 4,
     title: "Quiz App",
     description:
       "An interactive quiz application with multiple questions, score tracking, answer selection, and responsive result handling.",
@@ -90,7 +113,7 @@ const projects: Project[] = [
     category: "Frontend",
   },
   {
-    id: 4,
+    id: 5,
     title: "Brand Lift Technologies",
     description:
       "A modern corporate website showcasing digital services, technical expertise, and professional solutions through a responsive interface.",
@@ -107,7 +130,7 @@ const projects: Project[] = [
     category: "Frontend",
   },
   {
-    id: 5,
+    id: 6,
     title: "House of 2Talk",
     description:
       "A modern entertainment and business platform combining barbing, event planning, comedy, and content creation services.",
@@ -124,7 +147,7 @@ const projects: Project[] = [
     category: "Frontend",
   },
   {
-    id: 6,
+    id: 7,
     title: "Chess Game",
     description:
       "A desktop chess application built with C# and WPF, featuring an interactive board and core chess gameplay functionality.",
@@ -135,24 +158,25 @@ const projects: Project[] = [
     category: "Desktop",
   },
   {
-    id: 7,
-    title: "Champions League Simulator",
+    id: 8,
+    title: "FootballSim — Simulation API",
     description:
-      "An ASP.NET Core football simulation API for managing teams, competitions, fixtures, matches, standings, and automated results.",
+      "The ASP.NET Core backend powering FootballSim, with JWT authentication, competition ownership, fixture generation, match simulation, standings calculations, and role-protected admin APIs.",
     technologies: [
       "C#",
       "ASP.NET Core",
       "Entity Framework Core",
-      "MS SQL Server",
+      "PostgreSQL",
+      "Supabase",
       "REST API",
     ],
-    image: "/champions-league.jpg",
+    image: "/football-sim.png",
     link: "https://github.com/King-web-cell-05/ChampionsLeagueSimulatorApi",
     live: "",
     category: "Backend",
   },
   {
-    id: 8,
+    id: 9,
     title: "Employee Management System",
     description:
       "A full-stack enterprise system for employee administration, attendance, leave management, payslips, authentication, and role-based dashboards.",
