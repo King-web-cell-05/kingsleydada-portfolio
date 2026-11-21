@@ -222,14 +222,7 @@ export default function Navigation() {
                 </p>
               </div>
 
-              <button
-                type="button"
-                onClick={() => setIsOpen(false)}
-                aria-label="Close mobile navigation"
-                className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white/70 transition-colors hover:bg-white/10 hover:text-white"
-              >
-                <X size={18} />
-              </button>
+             
             </div>
 
             {/* LINKS */}
