@@ -157,26 +157,9 @@ const projects: Project[] = [
     live: "",
     category: "Desktop",
   },
+
   {
     id: 8,
-    title: "FootballSim — Simulation API",
-    description:
-      "The ASP.NET Core backend powering FootballSim, with JWT authentication, competition ownership, fixture generation, match simulation, standings calculations, and role-protected admin APIs.",
-    technologies: [
-      "C#",
-      "ASP.NET Core",
-      "Entity Framework Core",
-      "PostgreSQL",
-      "Supabase",
-      "REST API",
-    ],
-    image: "/football-sim.png",
-    link: "https://github.com/King-web-cell-05/ChampionsLeagueSimulatorApi",
-    live: "",
-    category: "Backend",
-  },
-  {
-    id: 9,
     title: "Employee Management System",
     description:
       "A full-stack enterprise system for employee administration, attendance, leave management, payslips, authentication, and role-based dashboards.",
